@@ -42,7 +42,7 @@ greta_kernel <- function (kernel_name,
 
       op_data_list <- list(operation = 'self-covariance matrix',
                            X = X)
-      tf_op <- 'tf_self_K'
+      tf_op <- tf_self_K
 
       dimfun <- function (elem_list) {
         X_dim <- get_dim(elem_list[[1]], 'X')
@@ -56,7 +56,7 @@ greta_kernel <- function (kernel_name,
       op_data_list <- list(operation = 'covariance matrix',
                            X = X,
                            X_prime = X_prime)
-      tf_op <- 'tf_K'
+      tf_op <- tf_K
 
       dimfun <- function (elem_list) {
 
