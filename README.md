@@ -1,29 +1,20 @@
----
-output:
-  md_document:
-    variant: markdown_github
----
-
-## gretaGP
+gretaGP
+-------
 
 #### Gaussian processes in greta
 
 gretaGP extends greta to let you define Gaussian processes as part of your model.
 
 ##### example
-```{r, setup, echo = FALSE}
-knitr::opts_knit$set(global.par = TRUE)
-set.seed(1)
-```
 
-```{r, simulate, message = FALSE}
+``` r
 # simulate data
 x <- runif(20, 0, 10)
 y <- sin(x) + rnorm(20, 0, 0.5)
 x_plot <- seq(-1, 11, length.out = 100)
 ```
 
-```{r, model, message = FALSE}
+``` r
 library (gretaGP)
 
 # hyperparameters
@@ -42,16 +33,13 @@ distribution(y) = normal(f, obs_sd)
 f_plot <- project(f, x_plot)
 ```
 
-```{r fit, message = FALSE}
+``` r
 # fit
 m <- model(f_plot)
 draws <- mcmc(m, n_samples = 200)
 ```
 
-```{r, par, echo = FALSE}
-par(las = 1, fg = grey(0.7), mar = c(2, 2, 1, 1))
-```
-```{r, plotting, fig.width = 10, fig.height = 6, dpi = 200}
+``` r
 # plot
 plot(y ~ x, pch = 16, col = grey(0.4), xlim = c(0, 10), ylim = range(draws[[1]]))
 for (i in 1:200) {
@@ -61,26 +49,24 @@ for (i in 1:200) {
 }
 ```
 
+![](README_files/figure-markdown_github/plotting-1.png)
+
 ##### installation
 
 This package currently depends on the GPflow python package and the gpflowr R package, both of which must be installed before gretaGP will run.
 
 You can install GPflow with pip by typing something like this at a command prompt:
 
-```
-git clone https://github.com/GPflow/GPflow.git
-cd GPflow && python setup.py install && cd ..
-```
+    git clone https://github.com/GPflow/GPflow.git
+    cd GPflow && python setup.py install && cd ..
 
 You can install gpflowr, the latest version of greta, and this package with the following R commands:
 
-```{r, install, eval = FALSE}
+``` r
 library (devtools)
 install_github("goldingn/gpflowr")
 install_github("greta-dev/greta")
 install_github("greta-dev/gretaGP")
 ```
 
-
-[![build status](https://travis-ci.org/greta-dev/gretaGP.svg?branch=master)](https://travis-ci.org/greta-dev/gretaGP)
-[![codecov.io](https://codecov.io/github/greta-dev/gretaGP/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/gretaGP?branch=master)
+[![build status](https://travis-ci.org/greta-dev/gretaGP.svg?branch=master)](https://travis-ci.org/greta-dev/gretaGP) [![codecov.io](https://codecov.io/github/greta-dev/gretaGP/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/gretaGP?branch=master)
