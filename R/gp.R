@@ -47,7 +47,7 @@ NULL
 #' @rdname gp
 #' @importFrom greta normal %*% forwardsolve
 #' @export
-gp <- function (x, kernel, inducing = NULL, tol = 0) {
+gp <- function (x, kernel, inducing = NULL, tol = 1e-4) {
 
   sparse <- !is.null(inducing)
 
