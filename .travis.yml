@@ -9,6 +9,7 @@ r_packages:
 
 r_github_packages:
   - greta-dev/greta
+  - goldingn/gpflowr
 
 cache:
   packages: true
@@ -32,8 +33,7 @@ before_install:
   - pip install --upgrade pip
   - pip install --user numpy
   - pip install --user tensorflow
-  - git clone https://github.com/GPflow/GPflow.git
-  - cd GPflow && sudo python setup.py install && cd ..
+  - pip install --user GPflow
 
 after_success:
   - Rscript -e "covr::codecov()"
