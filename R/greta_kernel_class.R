@@ -100,13 +100,13 @@ is.greta_kernel <- function (x)
   inherits(x, "greta_kernel")
 
 # combine greta kernel function objects
-combine_greta_kernel <- function(a, b, combine = c('additive', 'multiplicative')) {
+combine_greta_kernel <- function (a, b,
+                                  combine = c('additive', 'multiplicative')) {
 
   combine <- match.arg(combine)
 
-  if (!is.greta_kernel(a) && !is.greta_kernel(b)) {
-    stop ("can only combine a greta kernel function",
-          "with another greta kernel function",
+  if (!is.greta_kernel(a) | !is.greta_kernel(b)) {
+    stop ("can only combine a greta kernel with another greta kernel",
           call. = FALSE)
   }
 

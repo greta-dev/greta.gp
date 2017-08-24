@@ -95,6 +95,24 @@ test_that('kernels error on badly shaped inputs', {
 
 })
 
+test_that('kernels error if combined with other things', {
+
+  source("helpers.R")
+  skip_if_not(greta:::check_tf_version())
+  skip_if_not(gpflowr::gpflow_available())
+
+  expect_error(bias(1) + 1,
+               "can only combine a greta kernel with another greta kernel")
+  expect_error(1 + bias(1),
+               "can only combine a greta kernel with another greta kernel")
+
+  expect_error(bias(1) * 1,
+               "can only combine a greta kernel with another greta kernel")
+  expect_error(1 * bias(1),
+               "can only combine a greta kernel with another greta kernel")
+
+})
+
 test_that('kernels print their own names', {
 
   source("helpers.R")
