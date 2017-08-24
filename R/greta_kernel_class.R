@@ -9,7 +9,7 @@ greta_kernel <- function (kernel_name,
                           components = NULL,
                           arguments = list()) {
 
-  kernel_name <- paste(kernel_name, "kernel function")
+  kernel_name <- paste(kernel_name, "kernel")
 
   parameters <- lapply(parameters, as.greta_array)
 
@@ -25,7 +25,7 @@ greta_kernel <- function (kernel_name,
     x_dim <- dim(x)
 
     if (length(x_dim) != 2) {
-      stop (name, "must be a 2D greta array",
+      stop (name, " must be a 2D greta array",
             call. = FALSE)
     }
 
