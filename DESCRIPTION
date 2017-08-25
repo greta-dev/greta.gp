@@ -1,8 +1,8 @@
 Package: gretaGP
 Type: Package
 Title: Gaussian Process Modelling in greta
-Version: 0.1.1
-Date: 2017-08-23
+Version: 0.1.2
+Date: 2017-08-25
 Author: Nick Golding
 Maintainer: Nick Golding <nick.golding.research@gmail.com>
 Description: A greta module to create and combine covariance functions and use
