@@ -57,6 +57,30 @@ test_that('base kernels evaluate self-covariance correctly', {
                    expected = var * (1 + sqrt(5) * r + 5 / 3 * r ^ 2) *
                      exp(-sqrt(5) * r))
 
+  # periodic
+  r <- (pi * as.matrix(dist(x_))) / per
+  r <- sin(r) / len
+  check_covariance(periodic(per, len, var),
+                   x,
+                   expected = var * exp(-0.5 * r ^ 2), tol = 1e-2)
+
+})
+
+test_that('compound kernels evaluate self-covariance correctly', {
+
+  source("helpers.R")
+  skip_if_not(greta:::check_tf_version())
+  skip_if_not(gpflowr::gpflow_available())
+
+  n <- 5
+  x_ <- rnorm(n)
+  x <- as_data(x_)
+
+  var <- runif(1)
+  len <- runif(1)
+
+  r <- as.matrix(dist(x_ / len))
+
   # additive
   check_covariance(linear(var) + rbf(len, var),
                    x,
@@ -66,13 +90,6 @@ test_that('base kernels evaluate self-covariance correctly', {
   check_covariance(linear(var) * rbf(len, var),
                    x,
                    expected = (outer(x_, x_) * var) * (var * exp(-0.5 * r ^ 2)))
-
-  # periodic
-  r <- (pi * as.matrix(dist(x_))) / per
-  r <- sin(r) / len
-  check_covariance(periodic(per, len, var),
-                   x,
-                   expected = var * exp(-0.5 * r ^ 2), tol = 1e-2)
 
 })
 
