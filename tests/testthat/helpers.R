@@ -1,5 +1,7 @@
 # test functions
 
+set.seed(123)
+
 # need to get tf object here
 library (tensorflow)
 
@@ -55,5 +57,6 @@ check_covariance <- function (kernel, X, X_prime = NULL, expected, tol = 1e-6) {
   greta_out <- get_covariance(kernel, X, X_prime)
   difference <- as.vector(abs(expected - greta_out))
   expect_true(all(difference < tol))
+
 }
 

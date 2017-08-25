@@ -47,7 +47,7 @@ NULL
 #' @rdname gp
 #' @importFrom greta normal %*% forwardsolve
 #' @export
-gp <- function (x, kernel, inducing = NULL, tol = 0) {
+gp <- function (x, kernel, inducing = NULL, tol = 1e-4) {
 
   sparse <- !is.null(inducing)
 
@@ -98,7 +98,7 @@ project <- function (f, x_new, kernel = NULL) {
   info <- attr(f, "gp_info")
 
   if (is.null(info)) {
-    stop ("can only project from greta arrays created by gp$gp()",
+    stop ("can only project from greta arrays created with gretaGP::gp",
           call. = FALSE)
   }
 

@@ -9,7 +9,7 @@ greta_kernel <- function (kernel_name,
                           components = NULL,
                           arguments = list()) {
 
-  kernel_name <- paste(kernel_name, "kernel function")
+  kernel_name <- paste(kernel_name, "kernel")
 
   parameters <- lapply(parameters, as.greta_array)
 
@@ -25,7 +25,7 @@ greta_kernel <- function (kernel_name,
     x_dim <- dim(x)
 
     if (length(x_dim) != 2) {
-      stop (name, "must be a 2D greta array",
+      stop (name, " must be a 2D greta array",
             call. = FALSE)
     }
 
@@ -100,13 +100,13 @@ is.greta_kernel <- function (x)
   inherits(x, "greta_kernel")
 
 # combine greta kernel function objects
-combine_greta_kernel <- function(a, b, combine = c('additive', 'multiplicative')) {
+combine_greta_kernel <- function (a, b,
+                                  combine = c('additive', 'multiplicative')) {
 
   combine <- match.arg(combine)
 
-  if (!is.greta_kernel(a) && !is.greta_kernel(b)) {
-    stop ("can only combine a greta kernel function",
-          "with another greta kernel function",
+  if (!is.greta_kernel(a) | !is.greta_kernel(b)) {
+    stop ("can only combine a greta kernel with another greta kernel",
           call. = FALSE)
   }
 

@@ -6,7 +6,7 @@
 \alias{project}
 \title{Define a Gaussian process}
 \usage{
-gp(x, kernel, inducing = NULL, tol = 0)
+gp(x, kernel, inducing = NULL, tol = 1e-04)
 
 project(f, x_new, kernel = NULL)
 }
