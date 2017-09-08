@@ -6,18 +6,25 @@ as.greta_array <- greta::.internals$greta_arrays$as.greta_array
 greta_kernel <- function (kernel_name,
                           gpflow_name,
                           parameters,
+                          dim = NULL,
                           components = NULL,
+                          active_dims = NULL,
                           arguments = list()) {
 
   kernel_name <- paste(kernel_name, "kernel")
 
   parameters <- lapply(parameters, as.greta_array)
 
+  if (!is.null(dim))
+    dim <- as.integer(dim)
+
   kernel <- list(name = kernel_name,
                  parameters = parameters,
                  gpflow_method = gpflow_name,
                  components = components,
-                 arguments = arguments)
+                 arguments = c(input_dim = dim,
+                               list(active_dims = active_dims),
+                               arguments))
 
   # check and get the dimension of a target matrix
   get_dim <- function (x, name = 'X') {

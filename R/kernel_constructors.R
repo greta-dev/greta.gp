@@ -51,7 +51,7 @@ bias <- function (variance, dim = 1) {
   greta_kernel("bias",
                gpflow_name = "Bias",
                parameters = list(variance = variance),
-               arguments = list(input_dim = as.integer(dim)))
+               dim = dim)
 }
 
 #' @rdname kernels
@@ -60,7 +60,7 @@ white <- function (variance, dim = 1) {
   greta_kernel("white",
                gpflow_name = "White",
                parameters = list(variance = variance),
-               arguments = list(input_dim = as.integer(dim)))
+               dim = dim)
 }
 
 #' @rdname kernels
@@ -69,8 +69,8 @@ linear <- function (variances) {
   greta_kernel("linear",
                gpflow_name = 'Linear',
                parameters = list(variance = variances),
-               arguments = list(input_dim = length(variances),
-                                ARD = TRUE))
+               dim = length(variances),
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
@@ -80,8 +80,8 @@ rbf <- function (lengthscales, variance) {
                gpflow_name = 'RBF',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
@@ -91,8 +91,8 @@ expo <- function (lengthscales, variance) {
                gpflow_name = 'Exponential',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
@@ -102,8 +102,8 @@ mat12 <- function (lengthscales, variance) {
                gpflow_name = 'Matern12',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
@@ -113,8 +113,8 @@ mat32 <- function (lengthscales, variance) {
                gpflow_name = 'Matern32',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
@@ -124,8 +124,8 @@ mat52 <- function (lengthscales, variance) {
                gpflow_name = 'Matern52',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
@@ -136,5 +136,5 @@ periodic <- function (period, lengthscale, variance, dim = 1) {
                parameters = list(period = period,
                                  lengthscales = lengthscale,
                                  variance = variance),
-               arguments = list(input_dim = as.integer(dim)))
+               dim = dim)
 }
