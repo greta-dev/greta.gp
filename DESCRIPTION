@@ -1,4 +1,4 @@
-Package: gretaGP
+Package: greta.gp
 Type: Package
 Title: Gaussian Process Modelling in greta
 Version: 0.1.2

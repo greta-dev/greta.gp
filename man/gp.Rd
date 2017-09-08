@@ -15,7 +15,7 @@ project(f, x_new, kernel = NULL)
 Gaussian process}
 
 \item{kernel}{a kernel function created using one of the
-\code{\link[gretaGP:kernels]{kernel}} methods}
+\code{\link[greta.gp:kernels]{kernel}} methods}
 
 \item{inducing}{an optional greta array giving the coordinates of inducing
 points in a sparse (reduced rank) Gaussian process model}
