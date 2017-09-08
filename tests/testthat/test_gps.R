@@ -142,7 +142,7 @@ test_that('project() errors as expected', {
 
   f <- normal(0, 1, dim = 10)
   expect_error(f2 <- project(f, 15:20),
-               "can only project from greta arrays created with gretaGP::gp")
+               "can only project from greta arrays created with greta.gp::gp")
 
 })
 

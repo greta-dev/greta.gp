@@ -8,7 +8,7 @@
 #' @param x,x_new greta array giving the coordinates at which to evaluate the
 #'   Gaussian process
 #' @param kernel a kernel function created using one of the
-#'   \code{\link[gretaGP:kernels]{kernel}} methods
+#'   \code{\link[greta.gp:kernels]{kernel}} methods
 #' @param inducing an optional greta array giving the coordinates of inducing
 #'   points in a sparse (reduced rank) Gaussian process model
 #' @param tol a numerical tolerance parameter, added to the diagonal of the
@@ -98,7 +98,7 @@ project <- function (f, x_new, kernel = NULL) {
   info <- attr(f, "gp_info")
 
   if (is.null(info)) {
-    stop ("can only project from greta arrays created with gretaGP::gp",
+    stop ("can only project from greta arrays created with greta.gp::gp",
           call. = FALSE)
   }
 

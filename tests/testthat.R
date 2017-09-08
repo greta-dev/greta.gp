@@ -1,5 +1,5 @@
 library(testthat)
 library(tensorflow)
-library(gretaGP)
+library(greta.gp)
 
-test_check("gretaGP")
+test_check("greta.gp")
