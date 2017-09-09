@@ -8,7 +8,7 @@ output:
 
 ### Gaussian processes in greta
 
-greta.gp extends greta to let you define Gaussian processes as part of your model. It provides a syntax to create and combine GP kernels, and use them to define either full rank or sparse Gaussian processes.
+`greta.gp` extends greta to let you define Gaussian processes as part of your model. It provides a syntax to create and combine GP kernels, and use them to define either full rank or sparse Gaussian processes.
 
 [![build status](https://travis-ci.org/greta-dev/greta.gp.svg?branch=master)](https://travis-ci.org/greta-dev/greta.gp)
 [![codecov.io](https://codecov.io/github/greta-dev/greta.gp/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/greta.gp?branch=master)
