@@ -39,7 +39,7 @@ before_install:
   - cd ..
 
 after_success:
-  - Rscript -e "covr::codecov()"
+  - Rscript -e "(cov <- covr::package_coverage()); covr::codecov(coverage = cov)"
 
 email:
   on_success: change
