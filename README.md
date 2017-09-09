@@ -1,11 +1,11 @@
-gretaGP
-=======
+greta.gp
+========
 
 ### Gaussian processes in greta
 
-gretaGP extends greta to let you define Gaussian processes as part of your model. It provides a syntax to create and combine GP kernels, and use them to define either full rank or sparse Gaussian processes.
+greta.gp extends greta to let you define Gaussian processes as part of your model. It provides a syntax to create and combine GP kernels, and use them to define either full rank or sparse Gaussian processes.
 
-[![build status](https://travis-ci.org/greta-dev/gretaGP.svg?branch=master)](https://travis-ci.org/greta-dev/gretaGP) [![codecov.io](https://codecov.io/github/greta-dev/gretaGP/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/gretaGP?branch=master)
+[![build status](https://travis-ci.org/greta-dev/greta.gp.svg?branch=master)](https://travis-ci.org/greta-dev/greta.gp) [![codecov.io](https://codecov.io/github/greta-dev/greta.gp/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/greta.gp?branch=master)
 
 #### Example
 
@@ -18,7 +18,7 @@ x_plot <- seq(-1, 11, length.out = 200)
 
 ``` r
 library (greta)
-library (gretaGP)
+library (greta.gp)
 
 # hyperparameters
 rbf_var = lognormal(0, 1)
@@ -69,5 +69,5 @@ and you can install the R packages from within R using [devtools](https://CRAN.R
 library (devtools)
 install_github("goldingn/gpflowr")
 install_github("greta-dev/greta")
-install_github("greta-dev/gretaGP")
+install_github("greta-dev/greta.gp")
 ```

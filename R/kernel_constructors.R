@@ -11,14 +11,17 @@
 #'   distance along all dimensions (\code{lengthscale}) or each dimension
 #'   ((\code{lengthscales})) of the Gaussian process
 #' @param period (scalar) the period of the Gaussian process
+#' @param columns (scalar/vector integer, not a greta array) the columns of the
+#'   data matrix on which this kernel acts. Must have the same dimensions as lengthscale
+#'   parameters.
 #' @param dim (scalar integer, not a greta array) the dimension of the Gaussian
 #'   process (number of columns on which it acts)
 #'
 #' @details The kernel constructor functions each return a \emph{function} (of
-#'   class \code{greta_kernel}) which can be executed on greta arrays
-#'   to compute the covariance matrix between points in the space of the
-#'   Gaussian process. The \code{+} and \code{*} operators can be used to
-#'   combine kernel functions to create new kernel functions.
+#'   class \code{greta_kernel}) which can be executed on greta arrays to compute
+#'   the covariance matrix between points in the space of the Gaussian process.
+#'   The \code{+} and \code{*} operators can be used to combine kernel functions
+#'   to create new kernel functions.
 #'
 #'   The kernels are imported from the GPflow python package, using the gpflowr
 #'   R package. Both of those need to be installed before you can use these
@@ -51,7 +54,7 @@ bias <- function (variance, dim = 1) {
   greta_kernel("bias",
                gpflow_name = "Bias",
                parameters = list(variance = variance),
-               arguments = list(input_dim = as.integer(dim)))
+               dim = dim)
 }
 
 #' @rdname kernels
@@ -60,81 +63,88 @@ white <- function (variance, dim = 1) {
   greta_kernel("white",
                gpflow_name = "White",
                parameters = list(variance = variance),
-               arguments = list(input_dim = as.integer(dim)))
+               dim = dim)
 }
 
 #' @rdname kernels
 #' @export
-linear <- function (variances) {
+linear <- function (variances, columns = seq_along(variances)) {
   greta_kernel("linear",
                gpflow_name = 'Linear',
-               parameters = list(variance = variances),
-               arguments = list(input_dim = length(variances),
-                                ARD = TRUE))
+               parameters = list(variance = t(variances)),
+               dim = length(variances),
+               columns = columns,
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
 #' @export
-rbf <- function (lengthscales, variance) {
+rbf <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("radial basis",
                gpflow_name = 'RBF',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               columns = columns,
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
 #' @export
-expo <- function (lengthscales, variance) {
+expo <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("exponential",
                gpflow_name = 'Exponential',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               columns = columns,
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
 #' @export
-mat12 <- function (lengthscales, variance) {
+mat12 <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("Matern 1/2",
                gpflow_name = 'Matern12',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               columns = columns,
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
 #' @export
-mat32 <- function (lengthscales, variance) {
+mat32 <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("Matern 3/2",
                gpflow_name = 'Matern32',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               columns = columns,
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
 #' @export
-mat52 <- function (lengthscales, variance) {
+mat52 <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("Matern 5/2",
                gpflow_name = 'Matern52',
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               arguments = list(input_dim = length(lengthscales),
-                                ARD = TRUE))
+               dim = length(lengthscales),
+               columns = columns,
+               arguments = list(ARD = TRUE))
 }
 
 #' @rdname kernels
 #' @export
-periodic <- function (period, lengthscale, variance, dim = 1) {
+periodic <- function (period, lengthscale, variance, dim = 1, columns = seq_len(dim)) {
   greta_kernel("periodic",
                gpflow_name = 'PeriodicKernel',
                parameters = list(period = period,
                                  lengthscales = lengthscale,
                                  variance = variance),
-               arguments = list(input_dim = as.integer(dim)))
+               dim = dim,
+               columns = columns)
 }

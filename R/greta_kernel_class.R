@@ -6,18 +6,45 @@ as.greta_array <- greta::.internals$greta_arrays$as.greta_array
 greta_kernel <- function (kernel_name,
                           gpflow_name,
                           parameters,
+                          dim = NULL,
+                          columns = NULL,
                           components = NULL,
                           arguments = list()) {
 
-  kernel_name <- paste(kernel_name, "kernel function")
+  kernel_name <- paste(kernel_name, "kernel")
 
   parameters <- lapply(parameters, as.greta_array)
+
+  if (!is.null(dim))
+    dim <- as.integer(dim)
+
+  if (!is.null(columns)) {
+
+    columns <- as.integer(columns)
+
+    if (!all(columns >= 1)) {
+      stop ("columns must be a vector of positive integers, but was ", columns,
+            call. = FALSE)
+    }
+
+    # (dim must be defined)
+    if (length(columns) != dim) {
+      stop ("columns has length ", length(columns),
+            " but the kernel has dimension ", dim,
+            call. = FALSE)
+    }
+
+    columns <- as.list(columns - 1L)
+
+  }
 
   kernel <- list(name = kernel_name,
                  parameters = parameters,
                  gpflow_method = gpflow_name,
                  components = components,
-                 arguments = arguments)
+                 arguments = c(input_dim = list(dim),
+                               active_dims = list(columns),
+                               arguments))
 
   # check and get the dimension of a target matrix
   get_dim <- function (x, name = 'X') {
@@ -25,7 +52,7 @@ greta_kernel <- function (kernel_name,
     x_dim <- dim(x)
 
     if (length(x_dim) != 2) {
-      stop (name, "must be a 2D greta array",
+      stop (name, " must be a 2D greta array",
             call. = FALSE)
     }
 
@@ -100,13 +127,13 @@ is.greta_kernel <- function (x)
   inherits(x, "greta_kernel")
 
 # combine greta kernel function objects
-combine_greta_kernel <- function(a, b, combine = c('additive', 'multiplicative')) {
+combine_greta_kernel <- function (a, b,
+                                  combine = c('additive', 'multiplicative')) {
 
   combine <- match.arg(combine)
 
-  if (!is.greta_kernel(a) && !is.greta_kernel(b)) {
-    stop ("can only combine a greta kernel function",
-          "with another greta kernel function",
+  if (!is.greta_kernel(a) | !is.greta_kernel(b)) {
+    stop ("can only combine a greta kernel with another greta kernel",
           call. = FALSE)
   }
 
