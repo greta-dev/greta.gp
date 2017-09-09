@@ -17,19 +17,19 @@ bias(variance, dim = 1)
 
 white(variance, dim = 1)
 
-linear(variances)
+linear(variances, columns = seq_along(variances))
 
-rbf(lengthscales, variance)
+rbf(lengthscales, variance, columns = seq_along(lengthscales))
 
-expo(lengthscales, variance)
+expo(lengthscales, variance, columns = seq_along(lengthscales))
 
-mat12(lengthscales, variance)
+mat12(lengthscales, variance, columns = seq_along(lengthscales))
 
-mat32(lengthscales, variance)
+mat32(lengthscales, variance, columns = seq_along(lengthscales))
 
-mat52(lengthscales, variance)
+mat52(lengthscales, variance, columns = seq_along(lengthscales))
 
-periodic(period, lengthscale, variance, dim = 1)
+periodic(period, lengthscale, variance, dim = 1, columns = seq_len(dim))
 }
 \arguments{
 \item{variance, variances}{(scalar/vector) the variance of a Gaussian process
@@ -38,6 +38,10 @@ prior in all dimensions (\code{variance}) or in each dimension
 
 \item{dim}{(scalar integer, not a greta array) the dimension of the Gaussian
 process (number of columns on which it acts)}
+
+\item{columns}{(scalar/vector integer, not a greta array) the columns of the
+data matrix on which this kernel acts. Must have the same dimensions as lengthscale
+parameters.}
 
 \item{period}{(scalar) the period of the Gaussian process}
 
@@ -51,10 +55,10 @@ Create and combine Gaussian process kernels (covariance
 }
 \details{
 The kernel constructor functions each return a \emph{function} (of
-  class \code{greta_kernel}) which can be executed on greta arrays
-  to compute the covariance matrix between points in the space of the
-  Gaussian process. The \code{+} and \code{*} operators can be used to
-  combine kernel functions to create new kernel functions.
+  class \code{greta_kernel}) which can be executed on greta arrays to compute
+  the covariance matrix between points in the space of the Gaussian process.
+  The \code{+} and \code{*} operators can be used to combine kernel functions
+  to create new kernel functions.
 
   The kernels are imported from the GPflow python package, using the gpflowr
   R package. Both of those need to be installed before you can use these
