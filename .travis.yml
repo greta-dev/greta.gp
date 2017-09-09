@@ -39,6 +39,8 @@ before_install:
   - cd ..
 
 after_success:
+  - Rscript -e "greta:::check_tf_version()"
+  - Rscript -e "gpflowr::gpflow_available()"
   - Rscript -e "(cov <- covr::package_coverage()); covr::codecov(coverage = cov)"
 
 email:
