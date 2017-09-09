@@ -7,8 +7,8 @@ greta_kernel <- function (kernel_name,
                           gpflow_name,
                           parameters,
                           dim = NULL,
+                          columns = NULL,
                           components = NULL,
-                          active_dims = NULL,
                           arguments = list()) {
 
   kernel_name <- paste(kernel_name, "kernel")
@@ -18,12 +18,32 @@ greta_kernel <- function (kernel_name,
   if (!is.null(dim))
     dim <- as.integer(dim)
 
+  if (!is.null(columns)) {
+
+    columns <- as.integer(columns)
+
+    if (!all(columns >= 1)) {
+      stop ("columns must be a vector of positive integers, but was ", columns,
+            call. = FALSE)
+    }
+
+    # (dim must be defined)
+    if (length(columns) != dim) {
+      stop ("columns has length ", length(columns),
+            " but the kernel has dimension ", dim,
+            call. = FALSE)
+    }
+
+    columns <- as.list(columns - 1L)
+
+  }
+
   kernel <- list(name = kernel_name,
                  parameters = parameters,
                  gpflow_method = gpflow_name,
                  components = components,
-                 arguments = c(input_dim = dim,
-                               list(active_dims = active_dims),
+                 arguments = c(input_dim = list(dim),
+                               active_dims = list(columns),
                                arguments))
 
   # check and get the dimension of a target matrix

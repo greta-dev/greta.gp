@@ -93,6 +93,34 @@ test_that('compound kernels evaluate self-covariance correctly', {
 
 })
 
+test_that('compound kernels can act on specific dimensions', {
+
+  source("helpers.R")
+  skip_if_not(greta:::check_tf_version())
+  skip_if_not(gpflowr::gpflow_available())
+
+  n <- 5
+  x_ <- cbind(rnorm(n), runif(n))
+  x <- as_data(x_)
+
+  var <- runif(1)
+  len <- runif(1)
+
+  x_1 <- x_[, 1]
+  r_2 <- as.matrix(dist(x_[, 2] / len))
+
+  # additive
+  check_covariance(linear(var, columns = 1) + rbf(len, var, columns = 2),
+                   x,
+                   expected = (outer(x_1, x_1) * var) + (var * exp(-0.5 * r_2 ^ 2)))
+
+  # multiplicative
+  check_covariance(linear(var, columns = 1) * rbf(len, var, columns = 2),
+                   x,
+                   expected = (outer(x_1, x_1) * var) * (var * exp(-0.5 * r_2 ^ 2)))
+
+})
+
 test_that('kernels error on badly shaped inputs', {
 
   source("helpers.R")
@@ -109,6 +137,20 @@ test_that('kernels error on badly shaped inputs', {
                "X must be a 2D greta array")
   expect_error(kernel(x1, x2),
                "number of columns of X and X_prime do not match")
+
+})
+
+test_that('kernel constructors error on bad columns', {
+
+  source("helpers.R")
+  skip_if_not(greta:::check_tf_version())
+  skip_if_not(gpflowr::gpflow_available())
+
+  expect_error(rbf(1, 1, columns = 1:2),
+               "columns has length 2 but the kernel has dimension 1")
+
+  expect_error(rbf(1, 1, columns = -1),
+               "columns must be a vector of positive integers, but was -1")
 
 })
 
@@ -170,3 +212,6 @@ test_that('kernels print their own names', {
                 "multiplicative kernel")
 
 })
+
+
+
