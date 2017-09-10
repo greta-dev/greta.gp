@@ -35,12 +35,10 @@ before_install:
   - pip install --user tensorflow
   - git clone https://github.com/GPflow/GPflow.git
   - cd GPflow
-  - git checkout 760ed24062b15f25a25e5caaad17028db7714a3b
   - sudo python setup.py install
   - cd ..
 
 after_success:
-  - Rscript -e "greta:::check_tf_version()"
   - Rscript -e "gpflowr::gpflow_available()"
   - Rscript -e "(cov <- covr::package_coverage()); covr::codecov(coverage = cov)"
 
