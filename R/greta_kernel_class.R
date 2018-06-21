@@ -107,7 +107,7 @@ greta_kernel <- function (kernel_name,
               kernel$parameters,
               list(dimfun = dimfun,
                    operation_args = list(greta_kernel = kernel),
-                   tf_operation = paste0('greta.gp:::', tf_op))
+                   tf_operation = paste0('greta.gp:::', tf_op)))
 
     do.call(op, args)
 
