@@ -105,7 +105,7 @@ combine_greta_kernel <- function (a, b,
   par_idx <- c(length(kernel_a$parameters), length(kernel_b$parameters))
   par_idx <- list(1:par_idx[1], par_idx[1] + 1:par_idx[2])
   
-  greta_kernel(kernel_name = "combination",
+  greta_kernel(kernel_name = paste0(combine, " kernel"),
                tf_name = tf_name,
                parameters = c(kernel_a$parameters, kernel_b$parameters),
                components = list(kernel_a, kernel_b),

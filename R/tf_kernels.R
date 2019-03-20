@@ -51,7 +51,7 @@ tf_linear <- function(X, X_prime, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
 
   # full kernel
-  tf$tensordot(tf$multiply(variance, X), X_prime, c(-1L, -1L))
+  tf$matmul(tf$multiply(variance, X), X_prime, transpose_b = TRUE)
 
 }
 
@@ -62,7 +62,7 @@ tf_polynomial <- function(X, X_prime, variance, offset, degree, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
 
   # full kernel  
-  tf$pow(tf$tensordot(tf$multiply(variance, X), X_prime, c(-1L, -1L)) + offset, degree)
+  tf$pow(tf$matmul(tf$multiply(variance, X), X_prime, transpose_b = TRUE) + offset, degree)
   
 }
 
@@ -149,6 +149,23 @@ tf_cosine <- function(X, X_prime, lengthscales, variance, active_dims) {
 
 }
 
+# periodic kernel
+tf_periodic <- function(X, X_prime, lengthscales, variance, period, active_dims) {
+  
+  # pull out active dimensions
+  X <- tf_slice(X, active_dims)
+  X_prime <- tf_slice(X_prime, active_dims)
+  
+  # calculate squared distances (scaled if needed)
+  r <- tf$constant(pi, dtype = options()$greta_tf_float) * scaled_dist(X, X_prime, lengthscales) / period
+  r <- sin(r)
+  
+  # construct and return periodic kernel
+  variance * tf$exp(-tf$constant(0.5, dtype = options()$greta_tf_float) *
+                      r ^ tf$constant(2., dtype = options()$greta_tf_float))
+  
+}
+
 tf_Prod <- function(kernel_a, kernel_b) {
   
   tf$multiply(kernel_a, kernel_b)
@@ -208,6 +225,7 @@ tf_slice <- function(X, dims) {
   X
   
 }
+
 # 
 # # combine as module for export via internals
 # tf_kernels_module <- module(tf_static,
