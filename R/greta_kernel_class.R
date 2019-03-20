@@ -169,7 +169,8 @@ recurse_kernel <- function (operation, X, X_prime,
    
 }
 
-## COULD REMOVE THIS AND JUST CALL RECURSION DIRECTLY
+# internal function to calculate kernel K
+#  could remove this and call recurse_kernel directly
 tf_K <- function(operation, X, X_prime, greta_kernel, out_dim) {
   tf_kernel <- recurse_kernel(operation, X, X_prime,
                               greta_kernel, greta_kernel$parameters,
