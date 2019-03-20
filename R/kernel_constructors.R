@@ -14,8 +14,6 @@
 #' @param columns (scalar/vector integer, not a greta array) the columns of the
 #'   data matrix on which this kernel acts. Must have the same dimensions as lengthscale
 #'   parameters.
-#' @param dim (scalar integer, not a greta array) the dimension of the Gaussian
-#'   process (number of columns on which it acts)
 #'
 #' @details The kernel constructor functions each return a \emph{function} (of
 #'   class \code{greta_kernel}) which can be executed on greta arrays to compute
@@ -50,101 +48,154 @@ NULL
 
 #' @rdname kernels
 #' @export
-bias <- function (variance, dim = 1) {
+bias <- function (variance) {
   greta_kernel("bias",
-               gpflow_name = "Bias",
-               parameters = list(variance = variance),
-               dim = dim)
+               tf_name = "tf_bias",
+               parameters = list(variance = variance))
 }
 
 #' @rdname kernels
 #' @export
-white <- function (variance, dim = 1) {
+constant <- function (variance) {
+  greta_kernel("constant",
+               tf_name = "tf_bias",
+               parameters = list(variance = variance))
+}
+
+#' @rdname kernels
+#' @export
+white <- function (variance) {
   greta_kernel("white",
-               gpflow_name = "White",
-               parameters = list(variance = variance),
-               dim = dim)
+               tf_name = "tf_white",
+               parameters = list(variance = variance))
 }
 
 #' @rdname kernels
 #' @export
 linear <- function (variances, columns = seq_along(variances)) {
+
   greta_kernel("linear",
-               gpflow_name = 'Linear',
+               tf_name = "tf_linear",
                parameters = list(variance = t(variances)),
-               dim = length(variances),
                columns = columns,
-               arguments = list(ARD = TRUE))
+               arguments = list(active_dims = check_active_dims(columns)))
 }
 
 #' @rdname kernels
 #' @export
 rbf <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("radial basis",
-               gpflow_name = 'RBF',
+               tf_name = "tf_rbf",
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               dim = length(lengthscales),
-               columns = columns,
-               arguments = list(ARD = TRUE))
+               arguments = list(active_dims = check_active_dims(columns)))
 }
 
 #' @rdname kernels
 #' @export
 expo <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("exponential",
-               gpflow_name = 'Exponential',
+               tf_name = "tf_exponential",
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               dim = length(lengthscales),
-               columns = columns,
-               arguments = list(ARD = TRUE))
+               arguments = list(active_dims = check_active_dims(columns)))
 }
 
 #' @rdname kernels
 #' @export
 mat12 <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("Matern 1/2",
-               gpflow_name = 'Matern12',
+               tf_name = "tf_Matern12",
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               dim = length(lengthscales),
-               columns = columns,
-               arguments = list(ARD = TRUE))
+               arguments = list(active_dims = check_active_dims(columns)))
 }
 
 #' @rdname kernels
 #' @export
 mat32 <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("Matern 3/2",
-               gpflow_name = 'Matern32',
+               tf_name = "tf_Matern32",
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               dim = length(lengthscales),
-               columns = columns,
-               arguments = list(ARD = TRUE))
+               arguments = list(active_dims = check_active_dims(columns)))
 }
 
 #' @rdname kernels
 #' @export
 mat52 <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("Matern 5/2",
-               gpflow_name = 'Matern52',
+               tf_name = "tf_Matern52",
                parameters = list(lengthscales = t(lengthscales),
                                  variance = variance),
-               dim = length(lengthscales),
-               columns = columns,
-               arguments = list(ARD = TRUE))
+               arguments = list(active_dims = check_active_dims(columns)))
 }
 
 #' @rdname kernels
 #' @export
-periodic <- function (period, lengthscale, variance, dim = 1, columns = seq_len(dim)) {
+periodic <- function (period, lengthscale, variance, columns = seq_len(dim)) {
   greta_kernel("periodic",
-               gpflow_name = 'PeriodicKernel',
+               tf_name = "tf_periodic",
                parameters = list(period = period,
                                  lengthscales = lengthscale,
                                  variance = variance),
-               dim = dim,
-               columns = columns)
+               arguments = list(active_dims = check_active_dims(columns)))
+}
+
+#' @rdname kernels
+#' @export
+rational_quadratic <- function (period, lengthscales, variance, alpha, columns = seq_along(lengthscales)) {
+  greta_kernel("rational quadratic",
+               tf_name = "tf_rational_quadratic",
+               parameters = list(lengthscales = t(lengthscales),
+                                 variance = variance,
+                                 alpha = alpha),
+               arguments = list(active_dims = check_active_dims(columns)))
+}
+
+#' @rdname kernels
+#' @export
+polynomial <- function (variances, offset, degree, columns = seq_along(variances)) {
+  greta_kernel("polynomial",
+               tf_name = "tf_polynomial",
+               parameters = list(variance = t(variances),
+                                 offset = offset,
+                                 degree= degree),
+               arguments = list(active_dims = check_active_dims(columns)))
+}
+
+#' @rdname kernels
+#' @export
+cosine <- function (period, lengthscales, variance, columns = seq_along(lengthscales)) {
+  greta_kernel("cosine",
+               tf_name = "tf_cosine",
+               parameters = list(lengthscales = t(lengthscales),
+                                 variance = variance),
+               arguments = list(active_dims = check_active_dims(columns)))
+}
+
+#' @rdname kernels
+#' @export
+arc_cosine <- function (period, lengthscales, variance, order, weight, bias, columns = seq_along(lengthscales)) {
+  greta_kernel("arc_cosine",
+               tf_name = "tf_arc_cosine",
+               parameters = list(lengthscales = t(lengthscales),
+                                 variance = variance,
+                                 order = order,
+                                 weight = weight,
+                                 bias = bias),
+               arguments = list(active_dims = check_active_dims(columns)))
+}
+
+check_active_dims <- function(columns) {
+  
+  columns <- as.integer(columns)
+  
+  if (!all(columns >= 1)) {
+    stop ("columns must be a vector of positive integers, but was ", columns,
+          call. = FALSE)
+  }
+  
+  columns - 1L
+  
 }
