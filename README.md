@@ -56,18 +56,12 @@ for (i in 1:200) {
 
 #### Installation
 
-This package depends on the python package [GPflow](https://github.com/GPflow/GPflow), the R package [gpflowr](https://github.com/goldingn/gpflowr), and version 0.2.2 or higher of [greta](https://github.com/greta-dev/greta).
+This package depends on version 0.3.0 or higher of [greta](https://github.com/greta-dev/greta).
 
-You can install GPflow by typing something like this at a command prompt:
-
-    git clone https://github.com/GPflow/GPflow.git
-    cd GPflow && python setup.py install && cd ..
-
-and you can install the R packages from within R using [devtools](https://CRAN.R-project.org/package=devtools):
+You can install the R packages from within R using [devtools](https://CRAN.R-project.org/package=devtools):
 
 ``` r
 library (devtools)
-install_github("goldingn/gpflowr")
 install_github("greta-dev/greta")
 install_github("greta-dev/greta.gp")
 ```
