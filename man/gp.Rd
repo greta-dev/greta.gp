@@ -2,7 +2,6 @@
 % Please edit documentation in R/gp.R
 \name{gp}
 \alias{gp}
-\alias{gp}
 \alias{project}
 \title{Define a Gaussian process}
 \usage{
@@ -46,10 +45,10 @@ k2 <- bias(variance = lognormal(0, 1))
 K <- k1 + k2
 
 # use this kernel in a full-rank Gaussian process
-f = gp(1:10, K)
+f <- gp(1:10, K)
 
 # or in sparse Gaussian process
-f_sparse = gp(1:10, K, inducing = c(2, 5, 8))
+f_sparse <- gp(1:10, K, inducing = c(2, 5, 8))
 
 # project the values of the GP to new coordinates
 f_new <- project(f, 11:15)

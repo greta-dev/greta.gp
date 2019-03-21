@@ -3,23 +3,31 @@
 \name{kernels}
 \alias{kernels}
 \alias{bias}
-\alias{white}
-\alias{linear}
+\alias{constant}
 \alias{rbf}
+\alias{rational_quadratic}
+\alias{linear}
+\alias{polynomial}
 \alias{expo}
 \alias{mat12}
 \alias{mat32}
 \alias{mat52}
+\alias{cosine}
 \alias{periodic}
 \title{Gaussian process kernels}
 \usage{
-bias(variance, dim = 1)
+bias(variance)
 
-white(variance, dim = 1)
+constant(variance)
+
+rbf(lengthscales, variance, columns = seq_along(lengthscales))
+
+rational_quadratic(lengthscales, variance, alpha,
+  columns = seq_along(lengthscales))
 
 linear(variances, columns = seq_along(variances))
 
-rbf(lengthscales, variance, columns = seq_along(lengthscales))
+polynomial(variances, offset, degree, columns = seq_along(variances))
 
 expo(lengthscales, variance, columns = seq_along(lengthscales))
 
@@ -29,15 +37,15 @@ mat32(lengthscales, variance, columns = seq_along(lengthscales))
 
 mat52(lengthscales, variance, columns = seq_along(lengthscales))
 
-periodic(period, lengthscale, variance, dim = 1, columns = seq_len(dim))
+cosine(lengthscales, variance, columns = seq_along(lengthscales))
+
+periodic(period, lengthscales, variance,
+  columns = seq_along(lengthscales))
 }
 \arguments{
 \item{variance, variances}{(scalar/vector) the variance of a Gaussian process
 prior in all dimensions (\code{variance}) or in each dimension
 (\code{variances})}
-
-\item{dim}{(scalar integer, not a greta array) the dimension of the Gaussian
-process (number of columns on which it acts)}
 
 \item{columns}{(scalar/vector integer, not a greta array) the columns of the
 data matrix on which this kernel acts. Must have the same dimensions as lengthscale
