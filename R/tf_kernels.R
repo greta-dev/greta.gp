@@ -12,7 +12,7 @@ tf_bias <- function(X, X_prime, variance, active_dims) {
 
 }
 
-# squared_exponential kernel (RBF)
+# squared exponential kernel (RBF)
 tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
 
   # pull out active dimensions
@@ -23,7 +23,7 @@ tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
   r2 <- scaled_square_dist(X, X_prime, lengthscales)
   
   # construct and return RBF kernel
-  variance * tf$exp(-r2 / tf$constant(2.0, dtype = tf$float64))
+  variance * tf$exp(-r2 / tf$constant(2.0, dtype = options()$greta_tf_float))
   
 }
 
@@ -188,8 +188,8 @@ scaled_square_dist <- function(X, X_prime, lengthscales) {
   Xs_prime <- tf$reduce_sum(tf$square(X_prime), axis = -1L)
   
   dist <- tf$constant(-2.0, dtype = tf$float64) * tf$matmul(X, X_prime, transpose_b = TRUE)  
-  dist <- dist + tf$transpose(Xs)
-  dist <- dist + Xs_prime
+  dist <- dist + tf$expand_dims(Xs, -2L)
+  dist <- dist + tf$expand_dims(Xs_prime, -1L)
   
   # return value clipped around single float precision
   tf$maximum(dist, 1e-40)
@@ -206,7 +206,7 @@ scaled_dist <- function(X, X_prime, lengthscales) {
   Xs_prime <- tf$reduce_sum(tf$square(X_prime), axis = -1L)
   
   dist <- tf$constant(-2., dtype = options()$greta_tf_float) * tf$matmul(X, X_prime, transpose_b = TRUE)  
-  dist <- dist + tf$transpose(Xs)
+  dist <- dist + Xs
   dist <- dist + Xs_prime
   
   # return value clipped around single float precision
@@ -226,8 +226,7 @@ tf_slice <- function(X, dims) {
   
 }
 
-# 
-# # combine as module for export via internals
+# combine as module for export via internals
 # tf_kernels_module <- module(tf_static,
 #                             tf_constant,
 #                             tf_bias,
