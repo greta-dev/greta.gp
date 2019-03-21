@@ -67,7 +67,7 @@ greta_kernel <- function (kernel_name,
               greta_kernel = list(kernel),
               out_dim = list(dim))
     
-    do.call("recurse_kernel", args)
+    do.call("tf_K", args)
     
   }
   
@@ -123,11 +123,10 @@ combine_greta_kernel <- function (a, b,
 
 # recursively iterate through nested greta kernels, creating corresponding
 # kernels and replacing their parameters with tensors
-recurse_kernel <- function (operation, X, X_prime, greta_kernel, out_dim) {
+recurse_kernel <- function (operation, X, X_prime,
+                            greta_kernel, greta_parameters,
+                            out_dim) {
 
-  # extract parameters
-  greta_parameters <- greta_kernel$parameters
-  
   # if it's compound, recursively call this function on the components then
   # combine them
   if (!is.null(greta_kernel$components)) {
@@ -168,4 +167,12 @@ recurse_kernel <- function (operation, X, X_prime, greta_kernel, out_dim) {
    
   tf_kernel
    
+}
+
+# internal function to calculate kernel K
+#  could remove this and call recurse_kernel directly
+tf_K <- function(operation, X, X_prime, greta_kernel, out_dim) {
+  tf_kernel <- recurse_kernel(operation, X, X_prime,
+                              greta_kernel, greta_kernel$parameters,
+                              out_dim)
 }
