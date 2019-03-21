@@ -123,9 +123,7 @@ combine_greta_kernel <- function (a, b,
 
 # recursively iterate through nested greta kernels, creating corresponding
 # kernels and replacing their parameters with tensors
-recurse_kernel <- function (operation, X, X_prime,
-                            greta_kernel, greta_parameters,
-                            out_dim) {
+recurse_kernel <- function (operation, X, X_prime, greta_kernel, greta_parameters, out_dim) {
 
   # if it's compound, recursively call this function on the components then
   # combine them

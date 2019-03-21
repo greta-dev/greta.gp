@@ -87,6 +87,7 @@ gp <- function (x, kernel, inducing = NULL, tol = 1e-4) {
                              v = v,
                              Lm = Lm)
   f
+  
 }
 
 
