@@ -2,7 +2,7 @@ Package: greta.gp
 Type: Package
 Title: Gaussian Process Modelling in greta
 Version: 0.1.3
-Date: 2017-09-09
+Date: 2019-02-21
 Author: Nick Golding
 Maintainer: Nick Golding <nick.golding.research@gmail.com>
 Description: A greta module to create and combine covariance functions and use
@@ -10,8 +10,7 @@ Description: A greta module to create and combine covariance functions and use
 License: Apache License 2.0
 Imports:
   reticulate,
-  tensorflow,
-  gpflowr
+  tensorflow
 Depends:
   greta (>= 0.2.2)
 Suggests:
