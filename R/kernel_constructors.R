@@ -10,6 +10,9 @@
 #' @param lengthscale,lengthscales (scalar/vector) the correlation decay
 #'   distance along all dimensions (\code{lengthscale}) or each dimension
 #'   ((\code{lengthscales})) of the Gaussian process
+#' @param alpha (scalar) additional parameter in rational quadratic kernel
+#' @param offset (scalar) offset in polynomial kernel
+#' @param degree (scalar) degree of polynomial kernel
 #' @param period (scalar) the period of the Gaussian process
 #' @param columns (scalar/vector integer, not a greta array) the columns of the
 #'   data matrix on which this kernel acts. Must have the same dimensions as lengthscale
@@ -162,10 +165,10 @@ cosine <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
 
 #' @rdname kernels
 #' @export
-periodic <- function (period, lengthscales, variance) {
+periodic <- function (period, lengthscale, variance) {
   greta_kernel("periodic",
                tf_name = "tf_periodic",
-               parameters = list(lengthscales = t(lengthscales),
+               parameters = list(lengthscale = lengthscale,
                                  variance = variance,
                                  period = period))
 }

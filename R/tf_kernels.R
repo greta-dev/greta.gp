@@ -169,11 +169,11 @@ tf_cosine <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # periodic kernel
-tf_periodic <- function(X, X_prime, lengthscales, variance, period) {
+tf_periodic <- function(X, X_prime, lengthscale, variance, period) {
 
   # calculate squared distances (scaled if needed)
   exp_arg <- tf$constant(pi, dtype = options()$greta_tf_float) * absolute_dist(X, X_prime) / period
-  exp_arg <- sin(exp_arg) / lengthscales
+  exp_arg <- sin(exp_arg) / lengthscale
 
   # construct and return periodic kernel
   variance * tf$exp(-tf$constant(0.5, dtype = options()$greta_tf_float) *
