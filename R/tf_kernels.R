@@ -20,7 +20,7 @@ tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
 
   # calculate squared distances
-  r2 <- squared_dist(X, X_prime, lengthscales)
+  r2 <- scaled_square_dist(X, X_prime, lengthscales)
   
   # construct and return RBF kernel
   variance * tf$exp(-r2 / tf$constant(2.0, dtype = options()$greta_tf_float))
@@ -35,7 +35,7 @@ tf_rational_quadratic <- function(X, X_prime, lengthscales, variance, alpha, act
   X_prime <- tf_slice(X_prime, active_dims)
   
   # calculate squared distances (scaled if needed)
-  r2 <- squared_dist(X, X_prime, lengthscales)
+  r2 <- scaled_square_dist(X, X_prime, lengthscales)
 
   # construct and return rational quadratic kernel
   variance * (tf$constant(1., dtype = options()$greta_tf_float) +
@@ -44,25 +44,25 @@ tf_rational_quadratic <- function(X, X_prime, lengthscales, variance, alpha, act
 }
 
 # linear kernel (base class)
-tf_linear <- function(X, X_prime, variances, active_dims) {
+tf_linear <- function(X, X_prime, variance, active_dims) {
 
   # pull out active dimensions
   X <- tf_slice(X, active_dims)
   X_prime <- tf_slice(X_prime, active_dims)
 
   # full kernel
-  tf$matmul(tf$multiply(variances, X), X_prime, transpose_b = TRUE)
+  tf$matmul(tf$multiply(variance, X), X_prime, transpose_b = TRUE)
 
 }
 
-tf_polynomial <- function(X, X_prime, variances, offset, degree, active_dims) {
+tf_polynomial <- function(X, X_prime, variance, offset, degree, active_dims) {
 
   # pull out active dimensions
   X <- tf_slice(X, active_dims)
   X_prime <- tf_slice(X_prime, active_dims)
 
   # full kernel  
-  tf$pow(tf$matmul(tf$multiply(variances, X), X_prime, transpose_b = TRUE) + offset, degree)
+  tf$pow(tf$matmul(tf$multiply(variance, X), X_prime, transpose_b = TRUE) + offset, degree)
   
 }
 
@@ -74,7 +74,7 @@ tf_exponential <- function(X, X_prime, lengthscales, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
   
   # calculate squared distances (scaled if needed)
-  r <- absolute_dist(X, X_prime, lengthscales)
+  r <- scaled_dist(X, X_prime, lengthscales)
 
   # construct and return exponential kernel
   variance * tf$exp(-tf$constant(0.5, dtype = options()$greta_tf_float) * r)
@@ -89,7 +89,7 @@ tf_Matern12 <- function(X, X_prime, lengthscales, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
   
   # calculate squared distances (scaled if needed)
-  r <- absolute_dist(X, X_prime, lengthscales)
+  r <- scaled_dist(X, X_prime, lengthscales)
 
   # construct and return Matern12 kernel
   variance * tf$exp(-r)
@@ -104,7 +104,7 @@ tf_Matern32 <- function(X, X_prime, lengthscales, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
   
   # calculate squared distances (scaled if needed)
-  r <- absolute_dist(X, X_prime, lengthscales)
+  r <- scaled_dist(X, X_prime, lengthscales)
 
   # precalculate root3
   sqrt3 <- sqrt(tf$constant(3.0, dtype = options()$greta_tf_float))
@@ -122,7 +122,7 @@ tf_Matern52 <- function(X, X_prime, lengthscales, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
   
   # calculate squared distances (scaled if needed)
-  r <- absolute_dist(X, X_prime, lengthscales)
+  r <- scaled_dist(X, X_prime, lengthscales)
   
   # precalculate root5
   sqrt5 <- sqrt(tf$constant(5.0, dtype = options()$greta_tf_float))
@@ -142,7 +142,7 @@ tf_cosine <- function(X, X_prime, lengthscales, variance, active_dims) {
   X_prime <- tf_slice(X_prime, active_dims)
   
   # calculate squared distances (scaled if needed)
-  r <- absolute_dist(X, X_prime, lengthscales)
+  r <- scaled_dist(X, X_prime, lengthscales)
 
   # construct and return cosine kernel
   variance * tf$cos(r)
@@ -150,15 +150,19 @@ tf_cosine <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # periodic kernel
-tf_periodic <- function(X, X_prime, lengthscales, variance, period) {
-
+tf_periodic <- function(X, X_prime, lengthscales, variance, period, active_dims) {
+  
+  # pull out active dimensions
+  X <- tf_slice(X, active_dims)
+  X_prime <- tf_slice(X_prime, active_dims)
+  
   # calculate squared distances (scaled if needed)
-  exp_arg <- tf$constant(pi, dtype = options()$greta_tf_float) * absolute_dist(X, X_prime) / period
-  exp_arg <- sin(exp_arg) / lengthscales
-
+  r <- tf$constant(pi, dtype = options()$greta_tf_float) * scaled_dist(X, X_prime, lengthscales) / period
+  r <- sin(r)
+  
   # construct and return periodic kernel
   variance * tf$exp(-tf$constant(0.5, dtype = options()$greta_tf_float) *
-                      exp_arg ^ tf$constant(2., dtype = options()$greta_tf_float))
+                      r ^ tf$constant(2., dtype = options()$greta_tf_float))
   
 }
 
@@ -175,19 +179,17 @@ tf_Add <- function(kernel_a, kernel_b) {
 }
 
 # rescale, calculate, and return clipped squared distance
-squared_dist <- function(X, X_prime, lengthscales = NULL) {
+scaled_square_dist <- function(X, X_prime, lengthscales) {
   
-  if (!is.null(lengthscales)) {
-    X <- X / lengthscales
-    X_prime <- X_prime / lengthscales
-  }
-
+  X <- X / lengthscales
+  X_prime <- X_prime / lengthscales
+  
   Xs <- tf$reduce_sum(tf$square(X), axis = -1L)
   Xs_prime <- tf$reduce_sum(tf$square(X_prime), axis = -1L)
   
   dist <- tf$constant(-2.0, dtype = tf$float64) * tf$matmul(X, X_prime, transpose_b = TRUE)  
-  dist <- dist + tf$expand_dims(Xs, -1L)
-  dist <- dist + tf$expand_dims(Xs_prime, -2L)
+  dist <- dist + tf$expand_dims(Xs, -2L)
+  dist <- dist + tf$expand_dims(Xs_prime, -1L)
   
   # return value clipped around single float precision
   tf$maximum(dist, 1e-40)
@@ -195,19 +197,17 @@ squared_dist <- function(X, X_prime, lengthscales = NULL) {
 }
 
 # rescale, calculate, and return clipped squared distance
-absolute_dist <- function(X, X_prime, lengthscales = NULL) {
+scaled_dist <- function(X, X_prime, lengthscales) {
   
-  if (!is.null(lengthscales)) {
-    X <- X / lengthscales
-    X_prime <- X_prime / lengthscales
-  }
+  X <- X / lengthscales
+  X_prime <- X_prime / lengthscales
   
   Xs <- tf$reduce_sum(tf$square(X), axis = -1L)
   Xs_prime <- tf$reduce_sum(tf$square(X_prime), axis = -1L)
   
   dist <- tf$constant(-2., dtype = options()$greta_tf_float) * tf$matmul(X, X_prime, transpose_b = TRUE)  
-  dist <- dist + tf$expand_dims(Xs, -1L)
-  dist <- dist + tf$expand_dims(Xs_prime, -2L)
+  dist <- dist + Xs
+  dist <- dist + Xs_prime
   
   # return value clipped around single float precision
   tf$sqrt(tf$maximum(dist, 1e-40))
