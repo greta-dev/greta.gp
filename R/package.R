@@ -9,3 +9,8 @@
 #' @importFrom greta .internals
 #'
 NULL
+
+# need some internal greta functions accessible
+as.greta_array <- greta::.internals$greta_array$as.greta_array
+op <- greta::.internals$nodes$constructors$op
+
