@@ -28,6 +28,11 @@ test_that('base kernels evaluate self-covariance correctly', {
                    x,
                    expected = matrix(var, n, n))
   
+  # white
+  check_covariance(white(var),
+                   x,
+                   expected = diag(var, n))
+  
   # linear
   check_covariance(linear(var),
                    x,
@@ -121,6 +126,11 @@ test_that('base kernels evaluate covariance with different number of columns', {
   check_covariance(constant(var),
                    x, x2,
                    expected = matrix(var, nr1, nr2))
+  
+  # white
+  check_covariance(white(var),
+                   x, x2,
+                   expected = zeros(nr1, nr2))
   
   # linear
   check_covariance(linear(vars),

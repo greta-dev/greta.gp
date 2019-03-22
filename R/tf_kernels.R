@@ -12,6 +12,25 @@ tf_bias <- function(X, X_prime, variance, active_dims) {
 
 }
 
+# white kernel 
+# diagonal with specified variance if self-kernel, all 0s otherwise
+tf_white <- function(X, X_prime, variance, active_dims) {
+  
+  # only non-zero for self-covariance matrices
+  if (identical(X, X_prime)) {
+    # construct variance array and convert to diagonal array with batch dims
+    d <- tf$fill(tf$stack(c(tf$shape(X)[0L], tf$shape(X)[1L])), tf$squeeze(variance))
+    d <- tf$matrix_diag(d)
+  } else {
+    d <- tf$zeros(tf$stack(c(tf$shape(X)[0L], tf$shape(X)[1L], tf$shape(X_prime)[1L])),
+                  dtype = options()$greta_tf_float)
+  }
+  
+  # return constructed covariance matrix
+  d
+    
+}
+
 # squared exponential kernel (RBF)
 tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
 

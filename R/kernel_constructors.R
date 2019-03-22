@@ -21,11 +21,9 @@
 #'   The \code{+} and \code{*} operators can be used to combine kernel functions
 #'   to create new kernel functions.
 #'
-#'   The kernels are imported from the GPflow python package, using the gpflowr
-#'   R package. Both of those need to be installed before you can use these
-#'   methods. See the \href{gpflow.readthedocs.io}{GPflow website} for details
-#'   of the kernels implemented.
-#'
+#'   Note that \code{bias} and \code{constant} are identical names for the same
+#'   underlying kernel.
+#'   
 #' @examples
 #' # create a radial basis function kernel on two dimensions
 #' k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
@@ -59,6 +57,14 @@ bias <- function (variance) {
 constant <- function (variance) {
   greta_kernel("constant",
                tf_name = "tf_bias",
+               parameters = list(variance = variance))
+}
+
+#' @rdname kernels
+#' @export
+white <- function (variance) {
+  greta_kernel("white",
+               tf_name = "tf_white",
                parameters = list(variance = variance))
 }
 
