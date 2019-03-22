@@ -4,6 +4,7 @@
 \alias{kernels}
 \alias{bias}
 \alias{constant}
+\alias{white}
 \alias{rbf}
 \alias{rational_quadratic}
 \alias{linear}
@@ -19,6 +20,8 @@
 bias(variance)
 
 constant(variance)
+
+white(variance)
 
 rbf(lengthscales, variance, columns = seq_along(lengthscales))
 
@@ -39,8 +42,7 @@ mat52(lengthscales, variance, columns = seq_along(lengthscales))
 
 cosine(lengthscales, variance, columns = seq_along(lengthscales))
 
-periodic(period, lengthscales, variance,
-  columns = seq_along(lengthscales))
+periodic(period, lengthscales, variance)
 }
 \arguments{
 \item{variance, variances}{(scalar/vector) the variance of a Gaussian process
@@ -68,10 +70,8 @@ The kernel constructor functions each return a \emph{function} (of
   The \code{+} and \code{*} operators can be used to combine kernel functions
   to create new kernel functions.
 
-  The kernels are imported from the GPflow python package, using the gpflowr
-  R package. Both of those need to be installed before you can use these
-  methods. See the \href{gpflow.readthedocs.io}{GPflow website} for details
-  of the kernels implemented.
+  Note that \code{bias} and \code{constant} are identical names for the same
+  underlying kernel.
 }
 \examples{
 # create a radial basis function kernel on two dimensions
