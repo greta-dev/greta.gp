@@ -75,12 +75,112 @@ test_that('base kernels evaluate self-covariance correctly', {
                    expected = var * cos(r))
 
   # periodic
-  r <- (pi * as.matrix(dist(x_))) / per
-  r <- sin(r) / len
-  check_covariance(periodic(per, len, var),
+  exp_arg <- pi * as.matrix(dist(x)) / per
+  exp_arg <- sin(exp_arg) / len[1]
+  check_covariance(periodic(per, len[1], var),
                    x,
-                   expected = var * exp(-0.5 * r ^ 2), tol = 1e-2)
+                   expected = var * exp(-0.5 * exp_arg ^ 2), tol = 1e-4)
+  
+})
 
+test_that('base kernels evaluate covariance with different number of columns', {
+  
+  source("helpers.R")
+  skip_if_not(greta:::check_tf_version())
+  
+  nc <- 3
+  nr1 <- 5
+  nr2 <- 10
+  x <- matrix(rnorm(nc * nr1), nrow = nr1)
+  x2 <- matrix(rnorm(nc * nr2), nrow = nr2)
+
+  per <- runif(1)
+  var <- runif(1)
+  vars <- runif(nc)
+  len <- runif(nc)
+  deg <- 2.
+  offs <- runif(1)
+  alph <- 2.
+  
+  # redefine this for two matrices
+  z <- sweep(x, 2, len, "/")
+  z2 <- sweep(x2, 2, len, "/")
+  r2 <- -2. * z %*% t(z2)
+  z_sq <- rowSums(z ^ 2)
+  z2_sq <- rowSums(z2 ^ 2)
+  r2 <- sweep(r2, 1, z_sq, "+")
+  r2 <- sweep(r2, 2, z2_sq, "+")
+  r <- sqrt(r2)
+
+  # bias
+  check_covariance(bias(var),
+                   x, x2,
+                   expected = matrix(var, nr1, nr2))
+  
+  # constant
+  check_covariance(constant(var),
+                   x, x2,
+                   expected = matrix(var, nr1, nr2))
+  
+  # linear
+  check_covariance(linear(vars),
+                   x, x2,
+                   expected = sweep(x, 2, vars, "*") %*% t(x2))
+  
+  # polynomial
+  check_covariance(polynomial(vars, offset = offs, degree = deg),
+                   x, x2,
+                   expected = (offs + sweep(x, 2, vars, "*") %*% t(x2)) ^ deg)
+  
+  # rbf
+  check_covariance(rbf(len, var),
+                   x, x2,
+                   expected = var * exp(-0.5 * r2))
+  
+  # expo
+  check_covariance(expo(len, var),
+                   x, x2,
+                   expected = var * exp(-0.5 * r))
+  
+  # mat12
+  check_covariance(mat12(len, var),
+                   x, x2,
+                   expected = var * exp(-r))
+  
+  # mat32
+  check_covariance(mat32(len, var),
+                   x, x2,
+                   expected = var * (1 + sqrt(3) * r) * exp(-sqrt(3) * r))
+  
+  # mat52
+  check_covariance(mat52(len, var),
+                   x, x2,
+                   expected = var * (1 + sqrt(5) * r + 5 / 3 * r ^ 2) *
+                     exp(-sqrt(5) * r))
+  
+  # rational_quadratic
+  check_covariance(rational_quadratic(len, var, alph),
+                   x, x2,
+                   expected = var * (1 + r^2 / (2 * alph))^(-alph))
+  
+  # cosine
+  check_covariance(cosine(len, var),
+                   x, x2,
+                   expected = var * cos(r))
+  
+  # periodic
+  r2_ <- -2. * x %*% t(x2)
+  x_sq <- rowSums(x ^ 2)
+  x2_sq <- rowSums(x2 ^ 2)
+  r2_ <- sweep(r2_, 1, x_sq, "+")
+  r2_ <- sweep(r2_, 2, x2_sq, "+")
+  r_ <- sqrt(r2_)
+  exp_arg <- pi * r_ / per
+  exp_arg <- sin(exp_arg) / len[1]
+  check_covariance(periodic(per, len[1], var),
+                   x, x2,
+                   expected = var * exp(-0.5 * exp_arg ^ 2), tol = 1e-4)
+  
 })
 
 test_that('compound kernels evaluate self-covariance correctly', {

@@ -12,7 +12,7 @@ Imports:
   reticulate,
   tensorflow
 Depends:
-  greta (>= 0.2.2)
+  greta (>= 0.3.0)
 Suggests:
   testthat
 Encoding: UTF-8
