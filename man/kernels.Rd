@@ -42,7 +42,7 @@ mat52(lengthscales, variance, columns = seq_along(lengthscales))
 
 cosine(lengthscales, variance, columns = seq_along(lengthscales))
 
-periodic(period, lengthscales, variance)
+periodic(period, lengthscale, variance)
 }
 \arguments{
 \item{variance, variances}{(scalar/vector) the variance of a Gaussian process
@@ -52,6 +52,12 @@ prior in all dimensions (\code{variance}) or in each dimension
 \item{columns}{(scalar/vector integer, not a greta array) the columns of the
 data matrix on which this kernel acts. Must have the same dimensions as lengthscale
 parameters.}
+
+\item{alpha}{(scalar) additional parameter in rational quadratic kernel}
+
+\item{offset}{(scalar) offset in polynomial kernel}
+
+\item{degree}{(scalar) degree of polynomial kernel}
 
 \item{period}{(scalar) the period of the Gaussian process}
 
