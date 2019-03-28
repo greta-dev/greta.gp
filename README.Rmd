@@ -35,16 +35,16 @@ library (greta)
 library (greta.gp)
 
 # hyperparameters
-rbf_var = lognormal(0, 1)
-rbf_len = lognormal(0, 1)
-obs_sd = lognormal(0, 1)
+rbf_var <- lognormal(0, 1)
+rbf_len <- lognormal(0, 1)
+obs_sd <- lognormal(0, 1)
 
 # kernel & GP
 kernel <- rbf(rbf_len, rbf_var) + bias(1)
-f = gp(x, kernel)
+f <- gp(x, kernel)
 
 # likelihood
-distribution(y) = normal(f, obs_sd)
+distribution(y) <- normal(f, obs_sd)
 
 # prediction
 f_plot <- project(f, x_plot)
