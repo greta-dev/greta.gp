@@ -29,9 +29,10 @@ addons:
       - libv8-dev
 
 before_install:
+  - python -m pip install --user --upgrade pip
   - pip install --user numpy
   - pip install --user scipy
-  - pip install --user 'tensorflow==1.10'
+  - pip install --user 'tensorflow==1.12'
   - pip install --user --upgrade tensorflow-probability
   
 after_success:
