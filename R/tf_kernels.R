@@ -6,9 +6,6 @@ tf_cols <- function(X, active_dims) {
   X[, , active_dims, drop = FALSE]
 }
 
-fl <- greta::.internals$utils$misc$fl
-tf_float <- greta::.internals$utils$misc$tf_float
-
 tf_distance <- function (x1, x2, squared = FALSE) {
 
   n1 <- dim(x1)[[2]]
