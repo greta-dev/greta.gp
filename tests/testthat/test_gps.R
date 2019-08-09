@@ -1,11 +1,9 @@
 context('gaussian processes')
 
-
 test_that('gaussian processes work with numeric vectors', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   x <- 1:10
   x2 <- 11:30
@@ -26,7 +24,6 @@ test_that('gaussian processes work with numeric matrices', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   x <- cbind(1:10, 2:11)
   x2 <- cbind(11:30, 12:31)
@@ -48,7 +45,6 @@ test_that('gaussian processes work with greta arrays matrices', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   x <- as_data(cbind(1:10, 2:11))
   x2 <- as_data(cbind(11:30, 12:31))
@@ -70,18 +66,20 @@ test_that('gaussian processes can be defined in models and sampled from', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
-  k <- rbf(1, 1)
+  len <- greta::uniform(0.2, 0.4)
+  var <- greta::lognormal(0., 1.)
+  
+  k <- rbf(len, var)
 
   # full
-  f = gp(1:10, k)
+  f <- gp(1:10, k)
   expect_ok(m <- model(f))
   expect_ok(mcmc(m, warmup = 2, n_samples = 2))
 
   # sparse
-  f = gp(1:10, k,
-         inducing = c(2, 4, 6, 8))
+  f <- gp(1:10, k,
+          inducing = c(2, 4, 6, 8))
   expect_ok(m <- model(f))
   expect_ok(mcmc(m, warmup = 2, n_samples = 2))
 
@@ -91,12 +89,11 @@ test_that('gaussian processes can be projected to new data', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   k <- rbf(1, 1)
 
   # full
-  f = gp(1:10, k)
+  f <- gp(1:10, k)
   f2 <- project(f, 15:20)
   expect_ok(m <- model(f2))
   expect_ok(mcmc(m, warmup = 2, n_samples = 2))
@@ -114,7 +111,6 @@ test_that('gaussian processes can be projected with a different kernel', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   k1 <- rbf(1, 1)
   k2 <- periodic(1, 1, 1)
@@ -138,7 +134,6 @@ test_that('project() errors as expected', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   f <- normal(0, 1, dim = 10)
   expect_error(f2 <- project(f, 15:20),

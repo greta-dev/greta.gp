@@ -4,7 +4,6 @@ test_that('base kernels evaluate self-covariance correctly', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   n <- 5
   x_ <- rnorm(n)
@@ -13,6 +12,9 @@ test_that('base kernels evaluate self-covariance correctly', {
   per <- runif(1)
   var <- runif(1)
   len <- runif(1)
+  deg <- 2.
+  offs <- runif(1)
+  alph <- 2.
 
   r <- as.matrix(dist(x_ / len))
 
@@ -21,15 +23,25 @@ test_that('base kernels evaluate self-covariance correctly', {
                    x,
                    expected = matrix(var, n, n))
 
+  # constant
+  check_covariance(constant(var),
+                   x,
+                   expected = matrix(var, n, n))
+
   # white
   check_covariance(white(var),
                    x,
-                   expected = diag(n) * var)
+                   expected = diag(var, n))
 
   # linear
   check_covariance(linear(var),
                    x,
                    expected = outer(x_, x_) * var)
+
+  # polynomial
+  check_covariance(polynomial(var, offset = offs, degree = deg),
+                   x,
+                   expected = (offs + outer(x_, x_) * var) ^ deg)
 
   # rbf
   check_covariance(rbf(len, var),
@@ -57,12 +69,127 @@ test_that('base kernels evaluate self-covariance correctly', {
                    expected = var * (1 + sqrt(5) * r + 5 / 3 * r ^ 2) *
                      exp(-sqrt(5) * r))
 
-  # periodic
-  r <- (pi * as.matrix(dist(x_))) / per
-  r <- sin(r) / len
-  check_covariance(periodic(per, len, var),
+  # rational_quadratic
+  check_covariance(rational_quadratic(len, var, alph),
                    x,
-                   expected = var * exp(-0.5 * r ^ 2), tol = 1e-2)
+                   expected = var * (1 + r^2 / (2 * alph))^(-alph))
+
+  # cosine
+  check_covariance(cosine(len, var),
+                   x,
+                   expected = var * cos(r))
+
+  # periodic
+  exp_arg <- pi * as.matrix(dist(x)) / per
+  exp_arg <- sin(exp_arg) / len[1]
+  check_covariance(periodic(per, len[1], var),
+                   x,
+                   expected = var * exp(-0.5 * exp_arg ^ 2), tol = 1e-4)
+
+})
+
+test_that('base kernels evaluate covariance with different number of rows', {
+
+  source("helpers.R")
+  skip_if_not(greta:::check_tf_version())
+
+  nc <- 3
+  nr1 <- 5
+  nr2 <- 10
+  x <- matrix(rnorm(nc * nr1), nrow = nr1)
+  x2 <- matrix(rnorm(nc * nr2), nrow = nr2)
+
+  per <- runif(1)
+  var <- runif(1)
+  vars <- runif(nc)
+  len <- runif(nc)
+  deg <- 2.
+  offs <- runif(1)
+  alph <- 2.
+
+  # redefine this for two matrices
+  z <- sweep(x, 2, len, "/")
+  z2 <- sweep(x2, 2, len, "/")
+  r2 <- -2. * z %*% t(z2)
+  z_sq <- rowSums(z ^ 2)
+  z2_sq <- rowSums(z2 ^ 2)
+  r2 <- sweep(r2, 1, z_sq, "+")
+  r2 <- sweep(r2, 2, z2_sq, "+")
+  r <- sqrt(r2)
+
+  # bias
+  check_covariance(bias(var),
+                   x, x2,
+                   expected = matrix(var, nr1, nr2))
+
+  # constant
+  check_covariance(constant(var),
+                   x, x2,
+                   expected = matrix(var, nr1, nr2))
+
+  # white
+  check_covariance(white(var),
+                   x, x2,
+                   expected = zeros(nr1, nr2))
+
+  # linear
+  check_covariance(linear(vars),
+                   x, x2,
+                   expected = sweep(x, 2, vars, "*") %*% t(x2))
+
+  # polynomial
+  check_covariance(polynomial(vars, offset = offs, degree = deg),
+                   x, x2,
+                   expected = (offs + sweep(x, 2, vars, "*") %*% t(x2)) ^ deg)
+
+  # rbf
+  check_covariance(rbf(len, var),
+                   x, x2,
+                   expected = var * exp(-0.5 * r2))
+
+  # expo
+  check_covariance(expo(len, var),
+                   x, x2,
+                   expected = var * exp(-0.5 * r))
+
+  # mat12
+  check_covariance(mat12(len, var),
+                   x, x2,
+                   expected = var * exp(-r))
+
+  # mat32
+  check_covariance(mat32(len, var),
+                   x, x2,
+                   expected = var * (1 + sqrt(3) * r) * exp(-sqrt(3) * r))
+
+  # mat52
+  check_covariance(mat52(len, var),
+                   x, x2,
+                   expected = var * (1 + sqrt(5) * r + 5 / 3 * r ^ 2) *
+                     exp(-sqrt(5) * r))
+
+  # rational_quadratic
+  check_covariance(rational_quadratic(len, var, alph),
+                   x, x2,
+                   expected = var * (1 + r^2 / (2 * alph))^(-alph))
+
+  # cosine
+  check_covariance(cosine(len, var),
+                   x, x2,
+                   expected = var * cos(r))
+
+  # periodic
+  r2_ <- -2. * x %*% t(x2)
+  x_sq <- rowSums(x ^ 2)
+  x2_sq <- rowSums(x2 ^ 2)
+  r2_ <- sweep(r2_, 1, x_sq, "+")
+  r2_ <- sweep(r2_, 2, x2_sq, "+")
+  r_ <- sqrt(r2_)
+  exp_arg <- pi * r_ / per
+  exp_arg <- sin(exp_arg) / len[1]
+  check_covariance(periodic(per, len[1], var),
+                   x, x2,
+                   expected = var * exp(-0.5 * exp_arg ^ 2), tol = 1e-4)
 
 })
 
@@ -70,7 +197,6 @@ test_that('compound kernels evaluate self-covariance correctly', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   n <- 5
   x_ <- rnorm(n)
@@ -97,7 +223,6 @@ test_that('compound kernels can act on specific dimensions', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   n <- 5
   x_ <- cbind(rnorm(n), runif(n))
@@ -125,7 +250,6 @@ test_that('kernels error on badly shaped inputs', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   kernel <- rbf(1, 1)
 
@@ -144,7 +268,6 @@ test_that('kernel constructors error on bad columns', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   expect_error(rbf(1, 1, columns = 1:2),
                "columns has length 2 but the kernel has dimension 1")
@@ -158,7 +281,6 @@ test_that('kernels error if combined with other things', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   expect_error(bias(1) + 1,
                "can only combine a greta kernel with another greta kernel")
@@ -176,13 +298,9 @@ test_that('kernels print their own names', {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
-  skip_if_not(gpflowr::gpflow_available())
 
   expect_output(print(bias(1)),
                 "bias kernel")
-
-  expect_output(print(white(1)),
-                "white kernel")
 
   expect_output(print(linear(1)),
                 "linear kernel")
@@ -212,6 +330,3 @@ test_that('kernels print their own names', {
                 "multiplicative kernel")
 
 })
-
-
-

@@ -3,23 +3,34 @@
 \name{kernels}
 \alias{kernels}
 \alias{bias}
+\alias{constant}
 \alias{white}
-\alias{linear}
 \alias{rbf}
+\alias{rational_quadratic}
+\alias{linear}
+\alias{polynomial}
 \alias{expo}
 \alias{mat12}
 \alias{mat32}
 \alias{mat52}
+\alias{cosine}
 \alias{periodic}
 \title{Gaussian process kernels}
 \usage{
-bias(variance, dim = 1)
+bias(variance)
 
-white(variance, dim = 1)
+constant(variance)
+
+white(variance)
+
+rbf(lengthscales, variance, columns = seq_along(lengthscales))
+
+rational_quadratic(lengthscales, variance, alpha,
+  columns = seq_along(lengthscales))
 
 linear(variances, columns = seq_along(variances))
 
-rbf(lengthscales, variance, columns = seq_along(lengthscales))
+polynomial(variances, offset, degree, columns = seq_along(variances))
 
 expo(lengthscales, variance, columns = seq_along(lengthscales))
 
@@ -29,19 +40,24 @@ mat32(lengthscales, variance, columns = seq_along(lengthscales))
 
 mat52(lengthscales, variance, columns = seq_along(lengthscales))
 
-periodic(period, lengthscale, variance, dim = 1, columns = seq_len(dim))
+cosine(lengthscales, variance, columns = seq_along(lengthscales))
+
+periodic(period, lengthscale, variance)
 }
 \arguments{
 \item{variance, variances}{(scalar/vector) the variance of a Gaussian process
 prior in all dimensions (\code{variance}) or in each dimension
 (\code{variances})}
 
-\item{dim}{(scalar integer, not a greta array) the dimension of the Gaussian
-process (number of columns on which it acts)}
-
 \item{columns}{(scalar/vector integer, not a greta array) the columns of the
 data matrix on which this kernel acts. Must have the same dimensions as lengthscale
 parameters.}
+
+\item{alpha}{(scalar) additional parameter in rational quadratic kernel}
+
+\item{offset}{(scalar) offset in polynomial kernel}
+
+\item{degree}{(scalar) degree of polynomial kernel}
 
 \item{period}{(scalar) the period of the Gaussian process}
 
@@ -60,10 +76,8 @@ The kernel constructor functions each return a \emph{function} (of
   The \code{+} and \code{*} operators can be used to combine kernel functions
   to create new kernel functions.
 
-  The kernels are imported from the GPflow python package, using the gpflowr
-  R package. Both of those need to be installed before you can use these
-  methods. See the \href{gpflow.readthedocs.io}{GPflow website} for details
-  of the kernels implemented.
+  Note that \code{bias} and \code{constant} are identical names for the same
+  underlying kernel.
 }
 \examples{
 # create a radial basis function kernel on two dimensions
