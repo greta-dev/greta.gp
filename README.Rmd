@@ -53,7 +53,7 @@ f_plot <- project(f, x_plot)
 ```{r fit, message = FALSE}
 # fit the model by Hamiltonian Monte Carlo
 m <- model(f_plot)
-draws <- mcmc(m, n_samples = 200)
+draws <- mcmc(m)
 ```
 
 ```{r, plotting, fig.width = 10, fig.height = 6, dpi = 200}
