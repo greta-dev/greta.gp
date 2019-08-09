@@ -8,8 +8,7 @@ r_packages:
   - covr
 
 r_github_packages:
-  - greta-dev/greta
-  - goldingn/gpflowr
+  - greta-dev/greta@rc_0_3_1
 
 cache:
   packages: true
@@ -30,17 +29,14 @@ addons:
       - libv8-dev
 
 before_install:
-  - pip install --upgrade pip
+  - python -m pip install --user --upgrade pip
   - pip install --user numpy
-  - pip install --user tensorflow
-  - git clone https://github.com/GPflow/GPflow.git
-  - cd GPflow
-  - sudo python setup.py install
-  - cd ..
-
+  - pip install --user scipy
+  - pip install --user 'tensorflow==1.14'
+  - pip install --user 'tensorflow-probability==0.7.0'
+  
 after_success:
-  - Rscript -e "gpflowr::gpflow_available()"
-  - Rscript -e "(cov <- covr::package_coverage()); covr::codecov(coverage = cov)"
+  - Rscript -e "covr::codecov()"
 
 email:
   on_success: change

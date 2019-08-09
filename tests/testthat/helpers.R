@@ -5,58 +5,33 @@ set.seed(123)
 # need to get tf object here
 library (tensorflow)
 
+# need some internal functions from greta
+as.greta_array <- greta:::as.greta_array
+op <- greta::.internals$nodes$constructors$op
+
+# check an expr doesn't error
 expect_ok <- function (expr)
   expect_error(expr, NA)
 
-# evaluate a greta_array, node, or tensor
-grab <- function (x) {
-
-  if (inherits(x, "node"))
-    x <- as.greta_array(x)
-
-  if (inherits(x, "greta_array")) {
-    dag <- dag_class$new(list(x))
-    x$node$define_tf(dag)
-    x <- get(dag$tf_name(x$node),
-             envir = dag$tf_environment)
-  }
-
-  tf$Session()$run(x)
-
-}
-
-# evaluate the (unadjusted) density of distribution greta array at some data
-get_covariance <- function (kernel, X, X_prime = NULL) {
-
-  x <- as_data(X)
-
-  if (is.null(X_prime)) {
-    K <- kernel(x)
-  } else {
-    xp <- as_data(X_prime)
-    K <- kernel(x, xp)
-  }
-
-  # create dag and define the density
-  dag <- greta:::dag_class$new(list(K))
-  K$node$define_tf(dag)
-
-  # get the log density as a vector
-  tensor_name <- dag$tf_name(K$node)
-  tensor <- get(tensor_name, envir = dag$tf_environment)
-  grab(tensor)
-
+# need to know if things are greta arrays
+is_greta_array <- function(x) {
+  inherits(x, "greta_array")
 }
 
 # check a greta operation and the equivalent R operation give the same output
 # e.g. check_op(sum, randn(100, 3))
 check_covariance <- function (kernel, X, X_prime = NULL, expected, tol = 1e-6) {
 
-  tf$reset_default_graph()
+  tf$compat$v1$reset_default_graph()
 
-  greta_out <- get_covariance(kernel, X, X_prime)
-  difference <- as.vector(abs(expected - greta_out))
+  if (is.null(X_prime))
+    X_prime <- X
+
+  if (!is_greta_array(expected))
+    expected <- as.greta_array(expected)
+
+  greta_out <- greta::calculate(kernel(X, X_prime))
+  difference <- as.vector(abs(greta::calculate(expected) - greta_out))
   expect_true(all(difference < tol))
 
 }
-
