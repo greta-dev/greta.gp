@@ -1,8 +1,8 @@
 Package: greta.gp
 Type: Package
 Title: Gaussian Process Modelling in greta
-Version: 0.1.4
-Date: 2019-02-21
+Version: 0.1.5
+Date: 2019-08-09
 Authors@R: c(
   person("Nick", "Golding", role = c("aut", "cre"),
          email = "nick.golding.research@gmail.com",
@@ -17,7 +17,7 @@ Imports:
   reticulate,
   tensorflow
 Depends:
-  greta (>= 0.3.0)
+  greta (>= 0.3.1)
 Suggests:
   testthat
 Encoding: UTF-8
