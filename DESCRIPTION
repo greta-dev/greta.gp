@@ -1,7 +1,7 @@
 Package: greta.gp
 Type: Package
 Title: Gaussian Process Modelling in greta
-Version: 0.1.5
+Version: 0.1.5.9000
 Date: 2019-08-09
 Authors@R: c(
   person("Nick", "Golding", role = c("aut", "cre"),
