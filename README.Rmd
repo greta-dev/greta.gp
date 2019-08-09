@@ -68,12 +68,9 @@ for (i in 1:200) {
 
 #### Installation
 
-This package depends on version 0.3.0 or higher of [greta](https://github.com/greta-dev/greta).
-
-You can install the R packages from within R using [devtools](https://CRAN.R-project.org/package=devtools):
+This package depends on version 0.3.1 or higher of [greta](http://greta-stats.org). You can install the latest versions of both packages from GitHub:
 
 ```{r, install, eval = FALSE}
-library (devtools)
-install_github("greta-dev/greta")
-install_github("greta-dev/greta.gp")
+remotes::install_github("greta-dev/greta")
+remotes::install_github("greta-dev/greta.gp")
 ```
