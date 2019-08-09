@@ -4,77 +4,77 @@ greta_kernel <- function (kernel_name,
                           parameters,
                           components = NULL,
                           arguments = list()) {
-  
+
   kernel_name <- paste(kernel_name, "kernel")
-  
+
   parameters <- lapply(parameters, as.greta_array)
-  
+
   kernel <- list(name = kernel_name,
                  parameters = parameters,
                  tf_name = tf_name,
                  components = components,
                  arguments = arguments)
-  
+
   # check and get the dimension of a target matrix
   get_dim <- function (x, name = "X") {
-    
+
     x_dim <- dim(x)
-    
+
     if (length(x_dim) != 2) {
       stop (name, " must be a 2D greta array",
             call. = FALSE)
     }
-    
+
     x_dim
-    
+
   }
 
   # return a function here, acting on either one or two datasets
   kernel_function <- function (X, X_prime = NULL) {
-    
+
     X <- as.greta_array(X)
-    
+
     if (is.null(X_prime)) {
-      
+
       op_data_list <- list(operation = "self-covariance matrix",
                            X = X,
                            X_prime = X)
-      
+
       X_dim <- get_dim(X, "X")
       dim <- rep(X_dim[1], 2)
-      
+
     } else {
-      
+
       X_prime <- as.greta_array(X_prime)
-      
+
       op_data_list <- list(operation = "covariance matrix",
                            X = X,
                            X_prime = X_prime)
-      
+
       X_dim <- get_dim(X, "X")
       X_prime_dim <- get_dim(X_prime, "X_prime")
-      
+
       if (X_dim[2] != X_prime_dim[2]) {
         stop ("number of columns of X and X_prime do not match",
               call. = FALSE)
       }
-      
+
       dim <- c(X_dim[1], X_prime_dim[1])
 
     }
-    
+
     args <- c(op_data_list,
               greta_kernel = list(kernel),
               out_dim = list(dim))
-    
+
     do.call("tf_K", args)
-    
+
   }
-  
+
   # give it a class and return
   class(kernel_function) <- c("greta_kernel", class(kernel_function))
   kernel_function
-  
+
 }
 
 #' @export
@@ -101,10 +101,10 @@ combine_greta_kernel <- function (a, b,
   tf_name <- switch(combine,
                     additive = "tf_Add",
                     multiplicative = "tf_Prod")
-  
+
   par_idx <- c(length(kernel_a$parameters), length(kernel_b$parameters))
   par_idx <- list(1:par_idx[1], par_idx[1] + 1:par_idx[2])
-  
+
   greta_kernel(kernel_name = paste0(combine, " kernel"),
                tf_name = tf_name,
                parameters = c(kernel_a$parameters, kernel_b$parameters),
@@ -132,7 +132,7 @@ recurse_kernel <- function (operation, X, X_prime, greta_kernel, greta_parameter
     # parameters are in a big list for both kernels; need to
     # pull out correct pars for each kernel
     par_idx <- greta_kernel$arguments$parameter_idx
-    
+
     # recursively call and calculate component kernels
     a <- do.call(recurse_kernel, list(operation = operation,
                                       X = X, X_prime = X_prime,
@@ -144,27 +144,27 @@ recurse_kernel <- function (operation, X, X_prime, greta_kernel, greta_parameter
                                       greta_kernel = greta_kernel$components[[2]],
                                       greta_parameters = greta_kernel$parameters[par_idx[[2]]],
                                       out_dim = out_dim))
-    
+
     # combine evaluated base kernels
     tf_kernel <- op(operation,
                     kernel_a = a, kernel_b = b,
                     tf_operation = greta_kernel$tf_name,
                     dim = out_dim)
-    
+
   } else {
-    
+
     # get tf version of the basis kernel
     tf_kernel <- do.call(op, c(list(operation = operation,
-                                    X = X, X_prime = X_prime), 
+                                    X = X, X_prime = X_prime),
                                greta_parameters,
                                list(operation_args = greta_kernel$arguments,
                                     tf_operation = greta_kernel$tf_name,
-                                    dim = out_dim))) 
-    
+                                    dim = out_dim)))
+
   }
-   
+
   tf_kernel
-   
+
 }
 
 # internal function to calculate kernel K

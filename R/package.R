@@ -6,12 +6,12 @@
 #'   \code{\link{kernels}} and \code{\link{gp}}
 #'
 #' @docType package
+#'
 #' @importFrom greta .internals
+#' @importFrom tensorflow tf
 #'
 NULL
 
 # need some internal greta functions accessible
 as.greta_array <- greta::.internals$greta_array$as.greta_array
 op <- greta::.internals$nodes$constructors$op
-tf <- tensorflow::tf
-

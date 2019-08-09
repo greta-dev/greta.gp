@@ -31,8 +31,8 @@ addons:
 before_install:
   - pip install --user numpy
   - pip install --user scipy
-  - pip install --user 'tensorflow==1.10'
-  - pip install --user 'tensorflow-probability'
+  - pip install --user 'tensorflow==1.14'
+  - pip install --user 'tensorflow-probability==0.7.0'
   
 after_success:
   - Rscript -e "covr::codecov()"
