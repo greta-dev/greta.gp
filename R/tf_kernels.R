@@ -26,7 +26,7 @@ tf_distance <- function (x1, x2, squared = FALSE) {
 
 }
 
-# build an matrix of ones with dimension given by the number of rows in X and the
+# build a matrix with dimension given by the number of rows in X and the
 # number of rows in X_prime, filled with the given *constant* value
 tf_empty_along <- function (X, X_prime = NULL, fill = 1) {
 
@@ -58,9 +58,9 @@ tf_white <- function(X, X_prime, variance, active_dims) {
 
   # only non-zero for self-covariance matrices
   if (identical(X, X_prime)) {
-    d <- tf_empty_along(X, 1) * variance
+    variance <- tf$squeeze(variance, 2L)
+    d <- tf_empty_along(X, X_prime = NULL, fill = 1) * variance
     d <- tf$linalg$diag(d)
-    d <- tf$squeeze(d, 1L)
   } else {
     d <- tf_empty_along(X, X_prime, 0)
   }
