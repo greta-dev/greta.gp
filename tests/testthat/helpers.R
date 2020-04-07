@@ -30,8 +30,9 @@ check_covariance <- function (kernel, X, X_prime = NULL, expected, tol = 1e-6) {
   if (!is_greta_array(expected))
     expected <- as.greta_array(expected)
 
-  greta_out <- greta::calculate(kernel(X, X_prime))
-  difference <- as.vector(abs(greta::calculate(expected) - greta_out))
+  greta_out <- greta::calculate(kernel(X, X_prime))[[1]]
+  expected <- greta::calculate(expected)[[1]]
+  difference <- as.vector(abs(expected - greta_out))
   expect_true(all(difference < tol))
 
 }
