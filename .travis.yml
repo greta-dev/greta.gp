@@ -6,6 +6,7 @@ dist: trusty
 r_packages:
   - testthat
   - covr
+  - abind
 
 r_github_packages:
   - greta-dev/greta
@@ -34,7 +35,7 @@ before_install:
   - pip install --user scipy
   - pip install --user 'tensorflow==1.14'
   - pip install --user 'tensorflow-probability==0.7.0'
-  
+
 after_success:
   - Rscript -e "covr::codecov()"
 
