@@ -5,6 +5,7 @@
 \alias{bias}
 \alias{constant}
 \alias{white}
+\alias{iid}
 \alias{rbf}
 \alias{rational_quadratic}
 \alias{linear}
@@ -23,10 +24,16 @@ constant(variance)
 
 white(variance)
 
+iid(variance, columns = 1)
+
 rbf(lengthscales, variance, columns = seq_along(lengthscales))
 
-rational_quadratic(lengthscales, variance, alpha,
-  columns = seq_along(lengthscales))
+rational_quadratic(
+  lengthscales,
+  variance,
+  alpha,
+  columns = seq_along(lengthscales)
+)
 
 linear(variances, columns = seq_along(variances))
 
@@ -50,8 +57,8 @@ prior in all dimensions (\code{variance}) or in each dimension
 (\code{variances})}
 
 \item{columns}{(scalar/vector integer, not a greta array) the columns of the
-data matrix on which this kernel acts. Must have the same dimensions as lengthscale
-parameters.}
+data matrix on which this kernel acts. Must have the same dimensions as
+lengthscale parameters.}
 
 \item{alpha}{(scalar) additional parameter in rational quadratic kernel}
 
@@ -78,6 +85,11 @@ The kernel constructor functions each return a \emph{function} (of
 
   Note that \code{bias} and \code{constant} are identical names for the same
   underlying kernel.
+
+  \code{iid} is equivalent to \code{bias} where all entries in \code{columns}
+  match (where the absolute euclidean distance is less than
+  1e-12), and \code{white} where they don't; i.e. an independent Gaussian
+  random effect.
 }
 \examples{
 # create a radial basis function kernel on two dimensions

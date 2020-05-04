@@ -70,6 +70,19 @@ tf_white <- function(X, X_prime, variance, active_dims) {
 
 }
 
+tf_iid <- function(X, X_prime, variance, active_dims) {
+
+  # pull out active dimensions
+  X <- tf_cols(X, active_dims)
+  X_prime <- tf_cols(X_prime, active_dims)
+
+  # find where these values match and assign the variance as a covariance there
+  # (else set it to 0)
+  distance <- tf_distance(X, X_prime)
+  tf_as_float(distance < fl(1e-12)) * variance
+
+}
+
 # squared exponential kernel (RBF)
 tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
 

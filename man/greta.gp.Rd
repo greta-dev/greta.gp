@@ -3,7 +3,6 @@
 \docType{package}
 \name{greta.gp}
 \alias{greta.gp}
-\alias{greta.gp-package}
 \title{Gaussian process modelling in greta}
 \description{
 A greta module to create and combine covariance functions and

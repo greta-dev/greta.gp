@@ -33,6 +33,19 @@ test_that('base kernels evaluate self-covariance correctly', {
                    x,
                    expected = diag(var, n))
 
+  # iid
+  check_covariance(iid(var),
+                   x,
+                   expected = diag(var, n))
+
+  # iid
+  x2 <- as_data(rep(1:2, c(3, 4)))
+  expected <- matrix(0, 7, 7)
+  expected[1:3, 1:3] <- expected[4:7, 4:7] <- var
+  check_covariance(iid(var),
+                   x2,
+                   expected = expected)
+
   # linear
   check_covariance(linear(var),
                    x,
