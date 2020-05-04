@@ -105,6 +105,12 @@ test_that('gaussian processes can be projected to new data', {
   expect_ok(m <- model(f2))
   expect_ok(mcmc(m, warmup = 2, n_samples = 2))
 
+  # full & multiple
+  f <- gp(1:10, k, n = 3)
+  f2 <- project(f, 15:20)
+  expect_ok(m <- model(f2))
+  expect_ok(mcmc(m, warmup = 2, n_samples = 2))
+
 })
 
 test_that('gaussian processes can be projected with a different kernel', {
@@ -124,6 +130,12 @@ test_that('gaussian processes can be projected with a different kernel', {
   # sparse
   f = gp(1:10, k1,
          inducing = c(2, 4, 6, 8))
+  f2 <- project(f, 15:20, k2)
+  expect_ok(m <- model(f2))
+  expect_ok(mcmc(m, warmup = 2, n_samples = 2))
+
+  # full & multiple
+  f <- gp(1:10, k1, n = 3)
   f2 <- project(f, 15:20, k2)
   expect_ok(m <- model(f2))
   expect_ok(mcmc(m, warmup = 2, n_samples = 2))

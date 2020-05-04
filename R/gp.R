@@ -11,17 +11,19 @@
 #'   \code{\link[greta.gp:kernels]{kernel}} methods
 #' @param inducing an optional greta array giving the coordinates of inducing
 #'   points in a sparse (reduced rank) Gaussian process model
+#' @param n the number of independent Gaussian processes to define with
+#'   the same kernel
 #' @param tol a numerical tolerance parameter, added to the diagonal of the
 #'   self-covariance matrix when computing the cholesky decomposition. If the
 #'   sampler is hitting a lot of numerical errors, increasing this parameter
 #'   could help
-#' @param f a greta array created with \code{gp$gp} representing the values of a
-#'   Gaussian process
+#' @param f a greta array created with \code{gp$gp} representing the values of
+#'   one or more Gaussian processes
 #'
 #' @details \code{gp()} returns a greta array representing the values of the
-#'   Gaussian process evaluated at \code{x}. This Gaussian process can be made
-#'   sparse (via a reduced-rank representation of the covariance) by providing
-#'   an additional set of inducing point coordinates \code{inducing}.
+#'   Gaussian process(es) evaluated at \code{x}. This Gaussian process can be
+#'   made sparse (via a reduced-rank representation of the covariance) by
+#'   providing an additional set of inducing point coordinates \code{inducing}.
 #'   \code{project()} evaluates the values of an existing Gaussian process
 #'   (created with \code{gp()}) to new data.
 #'
@@ -47,7 +49,7 @@ NULL
 #' @rdname gp
 #' @importFrom greta normal %*% forwardsolve
 #' @export
-gp <- function (x, kernel, inducing = NULL, tol = 1e-4) {
+gp <- function (x, kernel, inducing = NULL, n = 1, tol = 1e-4) {
 
   sparse <- !is.null(inducing)
 
@@ -59,12 +61,12 @@ gp <- function (x, kernel, inducing = NULL, tol = 1e-4) {
     inducing <- as.greta_array(inducing)
 
   # calculate key objects
-  n <- nrow(inducing)
-  v <- normal(0, 1, dim = n)
+  m <- nrow(inducing)
+  v <- normal(0, 1, dim = c(m, n))
   Kmm <- kernel(inducing)
 
   if (!identical(tol, 0))
-    Kmm <- Kmm + diag(n) * tol
+    Kmm <- Kmm + diag(m) * tol
 
   Lm <- t(chol(Kmm))
 
@@ -87,7 +89,7 @@ gp <- function (x, kernel, inducing = NULL, tol = 1e-4) {
                              v = v,
                              Lm = Lm)
   f
-  
+
 }
 
 
