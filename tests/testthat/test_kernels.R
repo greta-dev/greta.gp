@@ -1,6 +1,6 @@
-context('kernels')
+context("kernels")
 
-test_that('base kernels evaluate self-covariance correctly', {
+test_that("base kernels evaluate self-covariance correctly", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -32,6 +32,19 @@ test_that('base kernels evaluate self-covariance correctly', {
   check_covariance(white(var),
                    x,
                    expected = diag(var, n))
+
+  # iid
+  check_covariance(iid(var),
+                   x,
+                   expected = diag(var, n))
+
+  # iid
+  x2 <- as_data(rep(1:2, c(3, 4)))
+  expected <- matrix(0, 7, 7)
+  expected[1:3, 1:3] <- expected[4:7, 4:7] <- var
+  check_covariance(iid(var),
+                   x2,
+                   expected = expected)
 
   # linear
   check_covariance(linear(var),
@@ -88,7 +101,7 @@ test_that('base kernels evaluate self-covariance correctly', {
 
 })
 
-test_that('base kernels evaluate covariance with different number of rows', {
+test_that("base kernels evaluate covariance with different number of rows", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -193,7 +206,7 @@ test_that('base kernels evaluate covariance with different number of rows', {
 
 })
 
-test_that('compound kernels evaluate self-covariance correctly', {
+test_that("compound kernels evaluate self-covariance correctly", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -219,7 +232,7 @@ test_that('compound kernels evaluate self-covariance correctly', {
 
 })
 
-test_that('compound kernels can act on specific dimensions', {
+test_that("compound kernels can act on specific dimensions", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -246,7 +259,7 @@ test_that('compound kernels can act on specific dimensions', {
 
 })
 
-test_that('kernels error on badly shaped inputs', {
+test_that("kernels error on badly shaped inputs", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -264,7 +277,7 @@ test_that('kernels error on badly shaped inputs', {
 
 })
 
-test_that('kernel constructors error on bad columns', {
+test_that("kernel constructors error on bad columns", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -277,7 +290,7 @@ test_that('kernel constructors error on bad columns', {
 
 })
 
-test_that('kernels error if combined with other things', {
+test_that("kernels error if combined with other things", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -294,7 +307,7 @@ test_that('kernels error if combined with other things', {
 
 })
 
-test_that('kernels print their own names', {
+test_that("kernels print their own names", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())

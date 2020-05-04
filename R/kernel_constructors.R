@@ -15,8 +15,8 @@
 #' @param degree (scalar) degree of polynomial kernel
 #' @param period (scalar) the period of the Gaussian process
 #' @param columns (scalar/vector integer, not a greta array) the columns of the
-#'   data matrix on which this kernel acts. Must have the same dimensions as lengthscale
-#'   parameters.
+#'   data matrix on which this kernel acts. Must have the same dimensions as
+#'   lengthscale parameters.
 #'
 #' @details The kernel constructor functions each return a \emph{function} (of
 #'   class \code{greta_kernel}) which can be executed on greta arrays to compute
@@ -26,7 +26,12 @@
 #'
 #'   Note that \code{bias} and \code{constant} are identical names for the same
 #'   underlying kernel.
-#'   
+#'
+#'   \code{iid} is equivalent to \code{bias} where all entries in \code{columns}
+#'   match (where the absolute euclidean distance is less than
+#'   1e-12), and \code{white} where they don't; i.e. an independent Gaussian
+#'   random effect.
+#'
 #' @examples
 #' # create a radial basis function kernel on two dimensions
 #' k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
@@ -73,6 +78,18 @@ white <- function (variance) {
 
 #' @rdname kernels
 #' @export
+iid <- function(variance, columns = 1) {
+  greta_kernel("iid",
+               tf_name = "tf_iid",
+               parameters = list(variance = variance),
+               arguments = list(
+                 active_dims = check_active_dims(columns,
+                                                 rep(1, length(columns))
+                 )))
+}
+
+#' @rdname kernels
+#' @export
 rbf <- function (lengthscales, variance, columns = seq_along(lengthscales)) {
   greta_kernel("radial basis",
                tf_name = "tf_rbf",
@@ -95,7 +112,7 @@ rational_quadratic <- function (lengthscales, variance, alpha, columns = seq_alo
 #' @rdname kernels
 #' @export
 linear <- function (variances, columns = seq_along(variances)) {
-  
+
   greta_kernel("linear",
                tf_name = "tf_linear",
                parameters = list(variance = t(variances)),
@@ -174,14 +191,14 @@ periodic <- function (period, lengthscale, variance) {
 }
 
 check_active_dims <- function(columns, lengthscales) {
-  
+
   columns <- as.integer(columns)
-  
+
   if (!all(columns >= 1)) {
     stop ("columns must be a vector of positive integers, but was ", columns,
           call. = FALSE)
   }
-  
+
   if (length(columns) != length(lengthscales)) {
     stop("columns has length ", length(columns),
          " but the kernel has dimension ", length(lengthscales),
@@ -189,5 +206,5 @@ check_active_dims <- function(columns, lengthscales) {
   }
 
   columns - 1L
-  
+
 }
