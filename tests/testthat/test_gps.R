@@ -1,6 +1,6 @@
-context('gaussian processes')
+context("gaussian processes")
 
-test_that('gaussian processes work with numeric vectors', {
+test_that("gaussian processes work with numeric vectors", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -20,7 +20,7 @@ test_that('gaussian processes work with numeric vectors', {
 
 })
 
-test_that('gaussian processes work with numeric matrices', {
+test_that("gaussian processes work with numeric matrices", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -41,7 +41,7 @@ test_that('gaussian processes work with numeric matrices', {
 
 })
 
-test_that('gaussian processes work with greta arrays matrices', {
+test_that("gaussian processes work with greta array matrices", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -62,14 +62,14 @@ test_that('gaussian processes work with greta arrays matrices', {
 
 })
 
-test_that('gaussian processes can be defined in models and sampled from', {
+test_that("gaussian processes can be defined in models and sampled from", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
 
   len <- greta::uniform(0.2, 0.4)
   var <- greta::lognormal(0., 1.)
-  
+
   k <- rbf(len, var)
 
   # full
@@ -85,7 +85,7 @@ test_that('gaussian processes can be defined in models and sampled from', {
 
 })
 
-test_that('gaussian processes can be projected to new data', {
+test_that("gaussian processes can be projected to new data", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -113,7 +113,7 @@ test_that('gaussian processes can be projected to new data', {
 
 })
 
-test_that('gaussian processes can be projected with a different kernel', {
+test_that("gaussian processes can be projected with a different kernel", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -142,7 +142,7 @@ test_that('gaussian processes can be projected with a different kernel', {
 
 })
 
-test_that('project() errors as expected', {
+test_that("project() errors as expected", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())

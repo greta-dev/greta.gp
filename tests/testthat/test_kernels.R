@@ -1,6 +1,6 @@
-context('kernels')
+context("kernels")
 
-test_that('base kernels evaluate self-covariance correctly', {
+test_that("base kernels evaluate self-covariance correctly", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -101,7 +101,7 @@ test_that('base kernels evaluate self-covariance correctly', {
 
 })
 
-test_that('base kernels evaluate covariance with different number of rows', {
+test_that("base kernels evaluate covariance with different number of rows", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -206,7 +206,7 @@ test_that('base kernels evaluate covariance with different number of rows', {
 
 })
 
-test_that('compound kernels evaluate self-covariance correctly', {
+test_that("compound kernels evaluate self-covariance correctly", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -232,7 +232,7 @@ test_that('compound kernels evaluate self-covariance correctly', {
 
 })
 
-test_that('compound kernels can act on specific dimensions', {
+test_that("compound kernels can act on specific dimensions", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -259,7 +259,7 @@ test_that('compound kernels can act on specific dimensions', {
 
 })
 
-test_that('kernels error on badly shaped inputs', {
+test_that("kernels error on badly shaped inputs", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -277,7 +277,7 @@ test_that('kernels error on badly shaped inputs', {
 
 })
 
-test_that('kernel constructors error on bad columns', {
+test_that("kernel constructors error on bad columns", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -290,7 +290,7 @@ test_that('kernel constructors error on bad columns', {
 
 })
 
-test_that('kernels error if combined with other things', {
+test_that("kernels error if combined with other things", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
@@ -307,7 +307,7 @@ test_that('kernels error if combined with other things', {
 
 })
 
-test_that('kernels print their own names', {
+test_that("kernels print their own names", {
 
   source("helpers.R")
   skip_if_not(greta:::check_tf_version())
