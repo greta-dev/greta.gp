@@ -26,7 +26,8 @@ Authors@R: c(
 Description: A 'greta' extension package to create and combine covariance 
   functions and use them to build Gaussian process models in 'greta'.
 License: Apache License 2.0
-URL: https://github.com/greta-dev/greta.gp
+URL: https://github.com/greta-dev/greta.gp,
+    https://greta-dev.github.io/greta.gp/
 BugReports: https://github.com/greta-dev/greta.gp/issues
 Depends:
     greta (>= 0.4.2),
