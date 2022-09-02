@@ -22,7 +22,7 @@ You can install the current release version of `greta.gp` from CRAN:
 install.packages("greta.gp")
 ```
 
-Or install the development version of `greta` from
+Or install the development version of `greta.dynamics` from
 [r-universe](https://greta-dev.r-universe.dev/ui#builds):
 
 ``` r
