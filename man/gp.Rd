@@ -30,6 +30,9 @@ could help}
 \item{f}{a greta array created with \code{gp$gp} representing the values of
 one or more Gaussian processes}
 }
+\value{
+A greta array
+}
 \description{
 Define Gaussian processes, and project them to new coordinates.
 }
@@ -42,6 +45,7 @@ providing an additional set of inducing point coordinates \code{inducing}.
 (created with \code{gp()}) to new data.
 }
 \examples{
+\dontrun{
 # build a kernel function on two dimensions
 k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
 k2 <- bias(variance = lognormal(0, 1))
@@ -58,4 +62,5 @@ f_new <- project(f, 11:15)
 
 # or project with a different kernel (e.g. a sub-kernel)
 f_new_bias <- project(f, 11:15, k2)
+}
 }

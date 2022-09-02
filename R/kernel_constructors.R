@@ -32,7 +32,10 @@
 #'   1e-12), and `white` where they don't; i.e. an independent Gaussian
 #'   random effect.
 #'
+#' @return greta kernel with class "greta_kernel"
+#'
 #' @examples
+#' \dontrun{
 #' # create a radial basis function kernel on two dimensions
 #' k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
 #'
@@ -64,6 +67,7 @@
 #' mat52(lengthscales = 0.3, variance = 0.9)
 #' cosine(lengthscales = 0.68, variance = 0.8)
 #' periodic(period = 0.71, lengthscale = 0.59, variance = 0.2)
+#' }
 NULL
 
 #' @rdname kernels

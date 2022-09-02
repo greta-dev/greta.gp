@@ -72,6 +72,9 @@ lengthscale parameters.}
 distance along all dimensions (\code{lengthscale}) or each dimension
 ((\code{lengthscales})) of the Gaussian process}
 }
+\value{
+greta kernel with class "greta_kernel"
+}
 \description{
 Create and combine Gaussian process kernels (covariance
 functions) for use in Gaussian process models.
@@ -92,6 +95,7 @@ match (where the absolute euclidean distance is less than
 random effect.
 }
 \examples{
+\dontrun{
 # create a radial basis function kernel on two dimensions
 k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
 
@@ -123,4 +127,5 @@ mat32(lengthscales = 0.4, variance = 0.8)
 mat52(lengthscales = 0.3, variance = 0.9)
 cosine(lengthscales = 0.68, variance = 0.8)
 periodic(period = 0.71, lengthscale = 0.59, variance = 0.2)
+}
 }

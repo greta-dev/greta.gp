@@ -27,7 +27,10 @@
 #'   `project()` evaluates the values of an existing Gaussian process
 #'   (created with `gp()`) to new data.
 #'
+#' @return A greta array
+#'
 #' @examples
+#' \dontrun{
 #' # build a kernel function on two dimensions
 #' k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
 #' k2 <- bias(variance = lognormal(0, 1))
@@ -44,6 +47,7 @@
 #'
 #' # or project with a different kernel (e.g. a sub-kernel)
 #' f_new_bias <- project(f, 11:15, k2)
+#' }
 NULL
 
 #' @rdname gp
