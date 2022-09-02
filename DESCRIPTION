@@ -7,7 +7,7 @@ Authors@R: c(
       given = "Nick", 
       family = "Golding", 
       email = "nick.golding.research@gmail.com", 
-      role = "aut",
+      role = c("aut", "cph"),
       comment = c(ORCID = "0000-0001-8916-5570")
       ),
     person(
@@ -23,14 +23,14 @@ Authors@R: c(
       comment = c(ORCID = "https://orcid.org/0000-0003-1460-8722")
       )
   )
-Maintainer: Nick Golding <nick.golding.research@gmail.com>
-Description: A greta module to create and combine covariance functions and
-    use them to build Gaussian process models in greta.
+Description: A 'greta' extension package to create and combine covariance 
+  functions and use them to build Gaussian process models in 'greta'.
 License: Apache License 2.0
 URL: https://github.com/greta-dev/greta.gp
 BugReports: https://github.com/greta-dev/greta.gp/issues
 Depends:
-    greta (>= 0.4.2)
+    greta (>= 0.4.2),
+    R (>= 3.1.0)
 Imports:
     cli,
     glue,
