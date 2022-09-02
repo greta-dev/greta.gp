@@ -11,3 +11,5 @@ README_files
 ^\.github$
 ^cran-comments\.md$
 ^codecov\.yml$
+^LICENSE\.md$
+^CODE_OF_CONDUCT\.md$
