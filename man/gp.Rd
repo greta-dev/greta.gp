@@ -5,7 +5,7 @@
 \alias{project}
 \title{Define a Gaussian process}
 \usage{
-gp(x, kernel, inducing = NULL, tol = 1e-04)
+gp(x, kernel, inducing = NULL, n = 1, tol = 1e-04)
 
 project(f, x_new, kernel = NULL)
 }
@@ -14,31 +14,38 @@ project(f, x_new, kernel = NULL)
 Gaussian process}
 
 \item{kernel}{a kernel function created using one of the
-\code{\link[greta.gp:kernels]{kernel}} methods}
+\code{\link[=kernels]{kernel()}} methods}
 
 \item{inducing}{an optional greta array giving the coordinates of inducing
 points in a sparse (reduced rank) Gaussian process model}
+
+\item{n}{the number of independent Gaussian processes to define with
+the same kernel}
 
 \item{tol}{a numerical tolerance parameter, added to the diagonal of the
 self-covariance matrix when computing the cholesky decomposition. If the
 sampler is hitting a lot of numerical errors, increasing this parameter
 could help}
 
-\item{f}{a greta array created with \code{gp$gp} representing the values of a
-Gaussian process}
+\item{f}{a greta array created with \code{gp$gp} representing the values of
+one or more Gaussian processes}
+}
+\value{
+A greta array
 }
 \description{
 Define Gaussian processes, and project them to new coordinates.
 }
 \details{
 \code{gp()} returns a greta array representing the values of the
-  Gaussian process evaluated at \code{x}. This Gaussian process can be made
-  sparse (via a reduced-rank representation of the covariance) by providing
-  an additional set of inducing point coordinates \code{inducing}.
-  \code{project()} evaluates the values of an existing Gaussian process
-  (created with \code{gp()}) to new data.
+Gaussian process(es) evaluated at \code{x}. This Gaussian process can be
+made sparse (via a reduced-rank representation of the covariance) by
+providing an additional set of inducing point coordinates \code{inducing}.
+\code{project()} evaluates the values of an existing Gaussian process
+(created with \code{gp()}) to new data.
 }
 \examples{
+\dontrun{
 # build a kernel function on two dimensions
 k1 <- rbf(lengthscales = c(0.1, 0.2), variance = 0.6)
 k2 <- bias(variance = lognormal(0, 1))
@@ -55,4 +62,5 @@ f_new <- project(f, 11:15)
 
 # or project with a different kernel (e.g. a sub-kernel)
 f_new_bias <- project(f, 11:15, k2)
+}
 }

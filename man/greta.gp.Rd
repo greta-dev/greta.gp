@@ -6,6 +6,6 @@
 \title{Gaussian process modelling in greta}
 \description{
 A greta module to create and combine covariance functions and
-  use them to build Gaussian process models in greta. See
-  \code{\link{kernels}} and \code{\link{gp}}
+use them to build Gaussian process models in greta. See
+\code{\link[=kernels]{kernels()}} and \code{\link[=gp]{gp()}}
 }

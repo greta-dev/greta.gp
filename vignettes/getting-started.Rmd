@@ -1,0 +1,76 @@
+---
+title: "getting-started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting-started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  eval = greta:::check_tf_version("message"),
+  cache = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(global.par = TRUE)
+set.seed(1)
+```
+
+```{r library}
+library(greta.gp)
+```
+
+### Gaussian processes in greta
+
+`greta.gp` extends greta to let you define Gaussian processes as part of your model. It provides a syntax to create and combine GP kernels, and use them to define either full rank or sparse Gaussian processes.
+
+#### Example
+
+```{r par, echo = FALSE}
+par(las = 1, fg = grey(0.7), mar = c(2, 2, 1, 1))
+```
+
+```{r simulate, message = FALSE}
+# simulate data
+x <- runif(20, 0, 10)
+y <- sin(x) + rnorm(20, 0, 0.5)
+x_plot <- seq(-1, 11, length.out = 200)
+```
+
+```{r model, message = FALSE}
+library(greta)
+library(greta.gp)
+
+# hyperparameters
+rbf_var <- lognormal(0, 1)
+rbf_len <- lognormal(0, 1)
+obs_sd <- lognormal(0, 1)
+
+# kernel & GP
+kernel <- rbf(rbf_len, rbf_var) + bias(1)
+f <- gp(x, kernel)
+
+# likelihood
+distribution(y) <- normal(f, obs_sd)
+
+# prediction
+f_plot <- project(f, x_plot)
+```
+
+```{r fit, message = FALSE}
+# fit the model by Hamiltonian Monte Carlo
+m <- model(f_plot)
+draws <- mcmc(m)
+```
+
+```{r plotting, fig.width = 10, fig.height = 6, dpi = 200}
+# plot 200 posterior samples
+plot(y ~ x, pch = 16, col = grey(0.4), xlim = c(0, 10), ylim = c(-2.5, 2.5))
+for (i in 1:200) {
+  lines(draws[[1]][i, ] ~ x_plot,
+        lwd = 2,
+        col = rgb(0.7, 0.1, 0.4, 0.1))  
+}
+```

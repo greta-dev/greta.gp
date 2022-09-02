@@ -1,17 +1,41 @@
-greta.gp
-========
 
-### Gaussian processes in greta
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# greta.gp: Gaussian Process in `greta`
+
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/greta-dev/greta.gp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/greta-dev/greta.gp/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/greta-dev/greta.gp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/greta-dev/greta.gp?branch=master)
+<!-- badges: end -->
 
 `greta.gp` extends greta to let you define Gaussian processes as part of
 your model. It provides a syntax to create and combine GP kernels, and
 use them to define either full rank or sparse Gaussian processes.
 
-[![build
-status](https://travis-ci.org/greta-dev/greta.gp.svg?branch=master)](https://travis-ci.org/greta-dev/greta.gp)
-[![codecov.io](https://codecov.io/github/greta-dev/greta.gp/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/greta.gp?branch=master)
+## Installation
 
-#### Example
+You can install the current release version of `greta.gp` from CRAN:
+
+``` r
+install.packages("greta.gp")
+```
+
+Or install the development version of `greta` from
+[r-universe](https://greta-dev.r-universe.dev/ui#builds):
+
+``` r
+install.packages("greta.gp", repos = "https://greta-dev.r-universe.dev")
+```
+
+You can also install the development version of `greta.gp` via GitHub:
+
+``` r
+remotes::install_github("greta-dev/greta.gp")
+```
+
+## Example usage
 
 ``` r
 # simulate data
@@ -43,7 +67,7 @@ f_plot <- project(f, x_plot)
 ``` r
 # fit the model by Hamiltonian Monte Carlo
 m <- model(f_plot)
-draws <- mcmc(m)
+draws <- mcmc(m, n_samples = 250)
 ```
 
 ``` r
@@ -56,15 +80,11 @@ for (i in 1:200) {
 }
 ```
 
-![](README_files/figure-markdown_github/plotting-1.png)
+<img src="man/figures/README-plotting-1.png" width="100%" />
 
-#### Installation
+## Code of Conduct
 
-This package depends on version 0.3.1 or higher of
-[greta](http://greta-stats.org). You can install the latest versions of
-both packages from GitHub:
-
-``` r
-remotes::install_github("greta-dev/greta")
-remotes::install_github("greta-dev/greta.gp")
-```
+Please note that the greta.gp project is released with a [Contributor
+Code of
+Conduct](https://greta-dev.github.io/greta.gp/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.

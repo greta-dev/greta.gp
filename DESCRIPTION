@@ -1,25 +1,57 @@
-Package: greta.gp
 Type: Package
-Title: Gaussian Process Modelling in greta
+Package: greta.gp
+Title: Gaussian Process Modelling in 'greta'
 Version: 0.1.5.9001
-Date: 2020-04-07
 Authors@R: c(
-  person("Nick", "Golding", role = c("aut", "cre"),
-         email = "nick.golding.research@gmail.com",
-         comment = c(ORCID = "0000-0001-8916-5570")), 
-  person("Jian", "Yen", role = "ctb")
+    person(
+      given = "Nick", 
+      family = "Golding", 
+      email = "nick.golding.research@gmail.com", 
+      role = c("aut", "cph"),
+      comment = c(ORCID = "0000-0001-8916-5570")
+      ),
+    person(
+      given = "Jian", 
+      family = "Yen", 
+      role = "ctb"
+      ),
+    person(
+      given = "Nicholas", 
+      family = "Tierney",
+      email = "nicholas.tierney@gmail.com", 
+      role = c("aut", "cre"),
+      comment = c(ORCID = "https://orcid.org/0000-0003-1460-8722")
+      )
   )
-Maintainer: Nick Golding <nick.golding.research@gmail.com>
-Description: A greta module to create and combine covariance functions and use
-    them to build Gaussian process models in greta.
-License: Apache License 2.0
-Imports:
-  reticulate,
-  tensorflow
+Description: Provides a syntax to create and combine Gaussian process kernels 
+  in 'greta'. You can then them to define either full rank or sparse Gaussian 
+  processes. This is an extension to the 'greta' software, Golding (2019) 
+  <doi:10.21105/joss.01601>.
+License: Apache License (>= 2)
+URL: https://github.com/greta-dev/greta.gp,
+    https://greta-dev.github.io/greta.gp/
+BugReports: https://github.com/greta-dev/greta.gp/issues
 Depends:
-  greta (>= 0.3.1)
-Suggests:
-  testthat
+    greta (>= 0.4.2),
+    R (>= 3.1.0)
+Imports:
+    cli,
+    glue,
+    tensorflow (>= 2.7.0)
+Suggests: 
+    covr,
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.1.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-GB
 LazyData: true
-RoxygenNote: 7.1.0
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+SystemRequirements: Python (>= 2.7.0) with header files and shared
+    library; TensorFlow (v1.14; https://www.tensorflow.org/); TensorFlow
+    Probability (v0.7.0; https://www.tensorflow.org/probability/)
