@@ -109,4 +109,18 @@ k2 <- bias(variance = lognormal(0, 1))
 # combine two kernels and evaluate
 K <- k1 + k2
 K(x, x2)
+
+# other kernels
+constant(variance = lognormal(0, 1))
+white(variance = lognormal(0, 1))
+iid(variance = lognormal(0,1))
+rational_quadratic(lengthscales = c(0.1, 0.2), alpha = 0.5, variance = 0.6)
+linear(variances = 0.1)
+polynomial(variances = 0.6, offset = 0.8, degree = 2)
+expo(lengthscales = 0.6 ,variance = 0.9)
+mat12(lengthscales = 0.5, variance = 0.7)
+mat32(lengthscales = 0.4, variance = 0.8)
+mat52(lengthscales = 0.3, variance = 0.9)
+cosine(lengthscales = 0.68, variance = 0.8)
+periodic(period = 0.71, lengthscale = 0.59, variance = 0.2)
 }
