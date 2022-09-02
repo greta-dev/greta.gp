@@ -1,25 +1,55 @@
-Package: greta.gp
 Type: Package
+Package: greta.gp
 Title: Gaussian Process Modelling in greta
 Version: 0.1.5.9001
-Date: 2020-04-07
 Authors@R: c(
-  person("Nick", "Golding", role = c("aut", "cre"),
-         email = "nick.golding.research@gmail.com",
-         comment = c(ORCID = "0000-0001-8916-5570")), 
-  person("Jian", "Yen", role = "ctb")
+    person(
+      given = "Nick", 
+      family = "Golding", 
+      email = "nick.golding.research@gmail.com", 
+      role = "aut",
+      comment = c(ORCID = "0000-0001-8916-5570")
+      ),
+    person(
+      given = "Jian", 
+      family = "Yen", 
+      role = "ctb"
+      ),
+    person(
+      given = "Nicholas", 
+      family = "Tierney",
+      email = "nicholas.tierney@gmail.com", 
+      role = c("aut", "cre"),
+      comment = c(ORCID = "https://orcid.org/0000-0003-1460-8722")
+      )
   )
 Maintainer: Nick Golding <nick.golding.research@gmail.com>
-Description: A greta module to create and combine covariance functions and use
-    them to build Gaussian process models in greta.
+Description: A greta module to create and combine covariance functions and
+    use them to build Gaussian process models in greta.
 License: Apache License 2.0
-Imports:
-  reticulate,
-  tensorflow
+URL: https://github.com/greta-dev/greta.gp
+BugReports: https://github.com/greta-dev/greta.gp/issues
 Depends:
-  greta (>= 0.3.1)
-Suggests:
-  testthat
+    greta (>= 0.4.2)
+Imports:
+    cli,
+    glue,
+    reticulate (>= 1.19.0),
+    tensorflow (>= 2.7.0)
+Suggests: 
+    covr,
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.1.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-GB
 LazyData: true
-RoxygenNote: 7.1.0
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+SystemRequirements: Python (>= 2.7.0) with header files and shared
+    library; TensorFlow (v1.14; https://www.tensorflow.org/); TensorFlow
+    Probability (v0.7.0; https://www.tensorflow.org/probability/)

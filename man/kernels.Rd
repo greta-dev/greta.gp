@@ -74,22 +74,22 @@ distance along all dimensions (\code{lengthscale}) or each dimension
 }
 \description{
 Create and combine Gaussian process kernels (covariance
-  functions) for use in Gaussian process models.
+functions) for use in Gaussian process models.
 }
 \details{
 The kernel constructor functions each return a \emph{function} (of
-  class \code{greta_kernel}) which can be executed on greta arrays to compute
-  the covariance matrix between points in the space of the Gaussian process.
-  The \code{+} and \code{*} operators can be used to combine kernel functions
-  to create new kernel functions.
+class \code{greta_kernel}) which can be executed on greta arrays to compute
+the covariance matrix between points in the space of the Gaussian process.
+The \code{+} and \code{*} operators can be used to combine kernel functions
+to create new kernel functions.
 
-  Note that \code{bias} and \code{constant} are identical names for the same
-  underlying kernel.
+Note that \code{bias} and \code{constant} are identical names for the same
+underlying kernel.
 
-  \code{iid} is equivalent to \code{bias} where all entries in \code{columns}
-  match (where the absolute euclidean distance is less than
-  1e-12), and \code{white} where they don't; i.e. an independent Gaussian
-  random effect.
+\code{iid} is equivalent to \code{bias} where all entries in \code{columns}
+match (where the absolute euclidean distance is less than
+1e-12), and \code{white} where they don't; i.e. an independent Gaussian
+random effect.
 }
 \examples{
 # create a radial basis function kernel on two dimensions
