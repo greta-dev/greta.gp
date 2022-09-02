@@ -5,10 +5,6 @@ set.seed(123)
 # need to get tf object here
 library(tensorflow)
 
-# need some internal functions from greta
-as.greta_array <- greta:::as.greta_array
-op <- greta::.internals$nodes$constructors$op
-
 # check an expr doesn't error
 expect_ok <- function(expr) {
   expect_error(expr, NA)

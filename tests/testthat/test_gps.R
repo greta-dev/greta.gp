@@ -1,8 +1,5 @@
-context("gaussian processes")
-
 test_that("gaussian processes work with numeric vectors", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   x <- 1:10
   x2 <- 11:30
@@ -19,8 +16,7 @@ test_that("gaussian processes work with numeric vectors", {
 })
 
 test_that("gaussian processes work with numeric matrices", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   x <- cbind(1:10, 2:11)
   x2 <- cbind(11:30, 12:31)
@@ -40,8 +36,7 @@ test_that("gaussian processes work with numeric matrices", {
 })
 
 test_that("gaussian processes work with greta array matrices", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   x <- as_data(cbind(1:10, 2:11))
   x2 <- as_data(cbind(11:30, 12:31))
@@ -61,8 +56,7 @@ test_that("gaussian processes work with greta array matrices", {
 })
 
 test_that("gaussian processes can be defined in models and sampled from", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   len <- greta::uniform(0.2, 0.4)
   var <- greta::lognormal(0., 1.)
@@ -83,8 +77,7 @@ test_that("gaussian processes can be defined in models and sampled from", {
 })
 
 test_that("gaussian processes can be projected to new data", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   k <- rbf(1, 1)
 
@@ -110,8 +103,7 @@ test_that("gaussian processes can be projected to new data", {
 })
 
 test_that("gaussian processes can be projected with a different kernel", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   k1 <- rbf(1, 1)
   k2 <- periodic(1, 1, 1)
@@ -138,12 +130,10 @@ test_that("gaussian processes can be projected with a different kernel", {
 })
 
 test_that("project() errors as expected", {
-  source("helpers.R")
-  skip_if_not(greta:::check_tf_version())
+  skip_if_not(check_tf_version())
 
   f <- normal(0, 1, dim = 10)
-  expect_error(
-    f2 <- project(f, 15:20),
-    "can only project from greta arrays created with greta.gp::gp"
+  expect_snapshot_error(
+    f2 <- project(f, 15:20)
   )
 })
