@@ -4,3 +4,4 @@
 README.Rmd
 README_files
 
+^README\.Rmd$

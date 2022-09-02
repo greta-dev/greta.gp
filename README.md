@@ -1,15 +1,18 @@
-greta.gp
-========
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# greta.gp
+
+<!-- badges: start -->
+
+[![codecov.io](https://codecov.io/github/greta-dev/greta.gp/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/greta.gp?branch=master)
+<!-- badges: end -->
 
 ### Gaussian processes in greta
 
 `greta.gp` extends greta to let you define Gaussian processes as part of
 your model. It provides a syntax to create and combine GP kernels, and
 use them to define either full rank or sparse Gaussian processes.
-
-[![build
-status](https://travis-ci.org/greta-dev/greta.gp.svg?branch=master)](https://travis-ci.org/greta-dev/greta.gp)
-[![codecov.io](https://codecov.io/github/greta-dev/greta.gp/coverage.svg?branch=master)](https://codecov.io/github/greta-dev/greta.gp?branch=master)
 
 #### Example
 
@@ -56,11 +59,11 @@ for (i in 1:200) {
 }
 ```
 
-![](README_files/figure-markdown_github/plotting-1.png)
+<img src="man/figures/README-plotting-1.png" width="100%" />
 
 #### Installation
 
-This package depends on version 0.3.1 or higher of
+This package depends on version 0.4.2 or higher of
 [greta](http://greta-stats.org). You can install the latest versions of
 both packages from GitHub:
 
