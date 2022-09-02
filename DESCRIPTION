@@ -1,6 +1,6 @@
 Type: Package
 Package: greta.gp
-Title: Gaussian Process Modelling in greta
+Title: Gaussian Process Modelling in 'greta'
 Version: 0.1.5.9001
 Authors@R: c(
     person(
@@ -23,9 +23,11 @@ Authors@R: c(
       comment = c(ORCID = "https://orcid.org/0000-0003-1460-8722")
       )
   )
-Description: A 'greta' extension package to create and combine covariance 
-  functions and use them to build Gaussian process models in 'greta'.
-License: Apache License 2.0
+Description: Create and combine covariance functions for use in building 
+  Gaussian process models in 'greta'.  It provides a syntax to create and 
+  combine Gaussian process kernels. You can then them to define either full 
+  rank or sparse Gaussian processes.
+License: Apache License (>= 2)
 URL: https://github.com/greta-dev/greta.gp,
     https://greta-dev.github.io/greta.gp/
 BugReports: https://github.com/greta-dev/greta.gp/issues
@@ -35,7 +37,6 @@ Depends:
 Imports:
     cli,
     glue,
-    reticulate (>= 1.19.0),
     tensorflow (>= 2.7.0)
 Suggests: 
     covr,
