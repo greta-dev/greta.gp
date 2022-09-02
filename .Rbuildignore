@@ -9,3 +9,5 @@ README_files
 ^docs$
 ^pkgdown$
 ^\.github$
+^cran-comments\.md$
+^codecov\.yml$
