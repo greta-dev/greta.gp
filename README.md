@@ -72,7 +72,16 @@ draws <- mcmc(m, n_samples = 250)
 
 ``` r
 # plot 200 posterior samples
-plot(y ~ x, pch = 16, col = grey(0.4), xlim = c(0, 10), ylim = c(-2.5, 2.5))
+# plot 200 posterior samples
+plot(
+  y ~ x,
+  pch = 16,
+  col = grey(0.4),
+  xlim = c(0, 10),
+  ylim = c(-2.5, 2.5),
+  las = 1,
+  fg = grey(0.7),
+)
 for (i in 1:200) {
   lines(draws[[1]][i, ] ~ x_plot,
         lwd = 2,

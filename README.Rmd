@@ -46,10 +46,6 @@ remotes::install_github("greta-dev/greta.gp")
 
 ## Example usage
 
-```{r par, echo = FALSE}
-par(las = 1, fg = grey(0.7), mar = c(2, 2, 1, 1))
-```
-
 ```{r simulate, message = FALSE}
 # simulate data
 x <- runif(20, 0, 10)
@@ -85,7 +81,16 @@ draws <- mcmc(m, n_samples = 250)
 
 ```{r plotting, fig.width = 10, fig.height = 6, dpi = 200}
 # plot 200 posterior samples
-plot(y ~ x, pch = 16, col = grey(0.4), xlim = c(0, 10), ylim = c(-2.5, 2.5))
+# plot 200 posterior samples
+plot(
+  y ~ x,
+  pch = 16,
+  col = grey(0.4),
+  xlim = c(0, 10),
+  ylim = c(-2.5, 2.5),
+  las = 1,
+  fg = grey(0.7),
+)
 for (i in 1:200) {
   lines(draws[[1]][i, ] ~ x_plot,
         lwd = 2,
