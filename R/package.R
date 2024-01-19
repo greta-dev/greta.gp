@@ -5,9 +5,7 @@
 #'   use them to build Gaussian process models in greta. See
 #'   [kernels()] and [gp()]
 #'
-#' @docType package
-#'
 #' @importFrom greta .internals
 #' @importFrom tensorflow tf
 #'
-NULL
+"_PACKAGE"

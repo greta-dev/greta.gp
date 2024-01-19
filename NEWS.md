@@ -1,4 +1,6 @@
-# greta.gp (development version)
+# greta.gp 0.2.1
+
+* Use sentinel "_PACKAGE"
 
 # greta.gp 0.2.0
 

@@ -2,10 +2,34 @@
 % Please edit documentation in R/package.R
 \docType{package}
 \name{greta.gp}
+\alias{greta.gp-package}
 \alias{greta.gp}
 \title{Gaussian process modelling in greta}
 \description{
 A greta module to create and combine covariance functions and
 use them to build Gaussian process models in greta. See
 \code{\link[=kernels]{kernels()}} and \code{\link[=gp]{gp()}}
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/greta-dev/greta.gp}
+  \item \url{https://greta-dev.github.io/greta.gp/}
+  \item Report bugs at \url{https://github.com/greta-dev/greta.gp/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Nicholas Tierney \email{nicholas.tierney@gmail.com} (\href{https://orcid.org/0000-0003-1460-8722}{ORCID})
+
+Authors:
+\itemize{
+  \item Nick Golding \email{nick.golding.research@gmail.com} (\href{https://orcid.org/0000-0001-8916-5570}{ORCID}) [copyright holder]
+}
+
+Other contributors:
+\itemize{
+  \item Jian Yen [contributor]
+}
+
 }
