@@ -8,7 +8,7 @@
 #' @param x,x_new greta array giving the coordinates at which to evaluate the
 #'   Gaussian process
 #' @param kernel a kernel function created using one of the
-#'   [`kernel()`][greta.gp::kernels] methods
+#'   [kernel()][greta.gp::kernels] methods
 #' @param inducing an optional greta array giving the coordinates of inducing
 #'   points in a sparse (reduced rank) Gaussian process model
 #' @param n the number of independent Gaussian processes to define with
