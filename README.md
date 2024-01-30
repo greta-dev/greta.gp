@@ -9,7 +9,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/greta.gp)](https://CRAN.R-project.org/package=greta.gp)
 [![Codecov test
-coverage](https://codecov.io/gh/greta-dev/greta.gp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/greta-dev/greta.gp?branch=master)
+coverage](https://codecov.io/gh/greta-dev/greta.gp/branch/main/graph/badge.svg)](https://app.codecov.io/gh/greta-dev/greta.gp?branch=main)
 <!-- badges: end -->
 
 `greta.gp` extends greta to let you define Gaussian processes as part of
