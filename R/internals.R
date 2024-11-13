@@ -1,4 +1,3 @@
-
 # need some internal greta functions accessible
 as.greta_array <- .internals$greta_array$as.greta_array
 op <- .internals$nodes$constructors$op

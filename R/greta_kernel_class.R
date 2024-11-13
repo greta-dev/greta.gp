@@ -20,12 +20,9 @@ greta_kernel <- function(kernel_name,
   get_dim <- function(x, name = "X") {
     x_dim <- dim(x)
 
-    if (length(x_dim) != 2) {
-      msg <- cli::format_error("{.var {name}} must be a 2D greta array")
-      stop(
-        msg,
-        call. = FALSE
-      )
+    not_2d <- length(x_dim) != 2
+    if (not_2d) {
+      cli::cli_abort("{.var {name}} must be a 2D greta array")
     }
 
     x_dim
@@ -56,17 +53,14 @@ greta_kernel <- function(kernel_name,
       X_dim <- get_dim(X, "X")
       X_prime_dim <- get_dim(X_prime, "X_prime")
 
-      if (X_dim[2] != X_prime_dim[2]) {
-        msg <- cli::format_error(
+      ncol_x_and_x_prime_do_not_match <- X_dim[2] != X_prime_dim[2]
+      if (ncol_x_and_x_prime_do_not_match) {
+        cli::cli_abort(
           c(
             "Number of columns of {.var X} and {.var X_prime} do not match",
             "i" = "{.var X} has {.val {X_dim[2]}} columns",
             "i" = "{.var X_prime} has {.val {X_prime_dim[2]}} columns"
           )
-        )
-        stop(
-          msg,
-          call. = FALSE
         )
       }
 
@@ -101,12 +95,8 @@ combine_greta_kernel <- function(a, b,
   combine <- match.arg(combine)
 
   if (!is.greta_kernel(a) | !is.greta_kernel(b)) {
-    msg <- cli::format_error(
+    cli::cli_abort(
       "Can only combine a greta kernel with another greta kernel"
-      )
-    stop(
-      msg,
-      call. = FALSE
     )
   }
 
@@ -142,12 +132,15 @@ combine_greta_kernel <- function(a, b,
 
 # recursively iterate through nested greta kernels, creating corresponding
 # kernels and replacing their parameters with tensors
-recurse_kernel <- function(operation, X, X_prime, greta_kernel, greta_parameters, out_dim) {
-
+recurse_kernel <- function(operation,
+                           X,
+                           X_prime,
+                           greta_kernel,
+                           greta_parameters,
+                           out_dim) {
   # if it's compound, recursively call this function on the components then
   # combine them
   if (!is.null(greta_kernel$components)) {
-
     # parameters are in a big list for both kernels; need to
     # pull out correct pars for each kernel
     par_idx <- greta_kernel$arguments$parameter_idx
@@ -175,7 +168,6 @@ recurse_kernel <- function(operation, X, X_prime, greta_kernel, greta_parameters
       dim = out_dim
     )
   } else {
-
     # get tf version of the basis kernel
     tf_kernel <- do.call(op, c(
       list(

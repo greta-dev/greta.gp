@@ -26,7 +26,9 @@ tf_distance <- function(x1, x2, squared = FALSE) {
 
 # build a matrix with dimension given by the number of rows in X and the
 # number of rows in X_prime, filled with the given *constant* value
-tf_empty_along <- function(X, X_prime = NULL, fill = 1) {
+tf_empty_along <- function(X,
+                           X_prime = NULL,
+                           fill = 1) {
   if (is.null(X_prime)) {
     dims_out <- tf$stack(c(tf$shape(X)[0], dim(X)[[2]]))
   } else {
@@ -42,16 +44,20 @@ tf_empty_along <- function(X, X_prime = NULL, fill = 1) {
 
 # bias (or constant) kernel
 # k(x, y) = \sigma^2
-tf_bias <- function(X, X_prime, variance, active_dims) {
-
+tf_bias <- function(X,
+                    X_prime,
+                    variance,
+                    active_dims) {
   # create and return covariance matrix
   tf_empty_along(X, X_prime, 1) * variance
 }
 
 # white kernel
 # diagonal with specified variance if self-kernel, all 0s otherwise
-tf_white <- function(X, X_prime, variance, active_dims) {
-
+tf_white <- function(X,
+                     X_prime,
+                     variance,
+                     active_dims) {
   # only non-zero for self-covariance matrices
   if (identical(X, X_prime)) {
     variance <- tf$squeeze(variance, 2L)
@@ -65,8 +71,10 @@ tf_white <- function(X, X_prime, variance, active_dims) {
   d
 }
 
-tf_iid <- function(X, X_prime, variance, active_dims) {
-
+tf_iid <- function(X,
+                   X_prime,
+                   variance,
+                   active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -78,8 +86,11 @@ tf_iid <- function(X, X_prime, variance, active_dims) {
 }
 
 # squared exponential kernel (RBF)
-tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
-
+tf_rbf <- function(X,
+                   X_prime,
+                   lengthscales,
+                   variance,
+                   active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -92,8 +103,12 @@ tf_rbf <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # rational_quadratic kernel
-tf_rational_quadratic <- function(X, X_prime, lengthscales, variance, alpha, active_dims) {
-
+tf_rational_quadratic <- function(X,
+                                  X_prime,
+                                  lengthscales,
+                                  variance,
+                                  alpha,
+                                  active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -106,8 +121,10 @@ tf_rational_quadratic <- function(X, X_prime, lengthscales, variance, alpha, act
 }
 
 # linear kernel (base class)
-tf_linear <- function(X, X_prime, variances, active_dims) {
-
+tf_linear <- function(X,
+                      X_prime,
+                      variances,
+                      active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -120,8 +137,12 @@ tf_linear <- function(X, X_prime, variances, active_dims) {
   )
 }
 
-tf_polynomial <- function(X, X_prime, variances, offset, degree, active_dims) {
-
+tf_polynomial <- function(X,
+                          X_prime,
+                          variances,
+                          offset,
+                          degree,
+                          active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -138,8 +159,11 @@ tf_polynomial <- function(X, X_prime, variances, offset, degree, active_dims) {
 }
 
 # # exponential kernel (stationary class)
-tf_exponential <- function(X, X_prime, lengthscales, variance, active_dims) {
-
+tf_exponential <- function(X,
+                           X_prime,
+                           lengthscales,
+                           variance,
+                           active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -152,8 +176,11 @@ tf_exponential <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # Matern12 kernel (stationary class)
-tf_Matern12 <- function(X, X_prime, lengthscales, variance, active_dims) {
-
+tf_Matern12 <- function(X,
+                        X_prime,
+                        lengthscales,
+                        variance,
+                        active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -166,8 +193,11 @@ tf_Matern12 <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # Matern32 kernel (stationary class)
-tf_Matern32 <- function(X, X_prime, lengthscales, variance, active_dims) {
-
+tf_Matern32 <- function(X,
+                        X_prime,
+                        lengthscales,
+                        variance,
+                        active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -183,8 +213,11 @@ tf_Matern32 <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # Matern52 kernel (stationary class)
-tf_Matern52 <- function(X, X_prime, lengthscales, variance, active_dims) {
-
+tf_Matern52 <- function(X,
+                        X_prime,
+                        lengthscales,
+                        variance,
+                        active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -200,8 +233,11 @@ tf_Matern52 <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # cosine kernel (stationary class)
-tf_cosine <- function(X, X_prime, lengthscales, variance, active_dims) {
-
+tf_cosine <- function(X,
+                      X_prime,
+                      lengthscales,
+                      variance,
+                      active_dims) {
   # pull out active dimensions
   X <- tf_cols(X, active_dims)
   X_prime <- tf_cols(X_prime, active_dims)
@@ -214,8 +250,11 @@ tf_cosine <- function(X, X_prime, lengthscales, variance, active_dims) {
 }
 
 # periodic kernel
-tf_periodic <- function(X, X_prime, lengthscale, variance, period) {
-
+tf_periodic <- function(X,
+                        X_prime,
+                        lengthscale,
+                        variance,
+                        period) {
   # calculate squared distances (scaled if needed)
   exp_arg <- fl(pi) * absolute_dist(X, X_prime) / period
   exp_arg <- tf$math$sin(exp_arg) / lengthscale
@@ -233,7 +272,10 @@ tf_Add <- function(kernel_a, kernel_b) {
 }
 
 # rescale, calculate, and return distance
-get_dist <- function(X, X_prime, lengthscales = NULL, squared = FALSE) {
+get_dist <- function(X,
+                     X_prime,
+                     lengthscales = NULL,
+                     squared = FALSE) {
   if (!is.null(lengthscales)) {
     X <- X / lengthscales
     X_prime <- X_prime / lengthscales
@@ -242,11 +284,15 @@ get_dist <- function(X, X_prime, lengthscales = NULL, squared = FALSE) {
   tf_distance(X, X_prime, squared = squared)
 }
 
-squared_dist <- function(X, X_prime, lengthscales = NULL) {
+squared_dist <- function(X,
+                         X_prime,
+                         lengthscales = NULL) {
   get_dist(X, X_prime, lengthscales, squared = TRUE)
 }
 
-absolute_dist <- function(X, X_prime, lengthscales = NULL) {
+absolute_dist <- function(X,
+                          X_prime,
+                          lengthscales = NULL) {
   get_dist(X, X_prime, lengthscales, squared = FALSE)
 }
 
