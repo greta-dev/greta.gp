@@ -25,7 +25,7 @@ install.packages("greta.gp")
 ```
 
 Or install the development version of `greta.dynamics` from
-[r-universe](http://greta-dev.r-universe.dev/ui/):
+[r-universe](http://greta-dev.r-universe.dev/):
 
 ``` r
 install.packages("greta.gp", repos = "https://greta-dev.r-universe.dev")
