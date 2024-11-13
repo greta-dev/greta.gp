@@ -98,21 +98,19 @@ gp <- function(x, kernel, inducing = NULL, n = 1, tol = 1e-4) {
 #' @rdname gp
 #' @export
 project <- function(f, x_new, kernel = NULL) {
-
   # get the gp information and project to x_new
   info <- attr(f, "gp_info")
 
   if (is.null(info)) {
-    msg <- cli::format_error(
+    cli::cli_abort(
       "Can only project from greta arrays created with {.code greta.gp::gp}"
-    )
-    stop(
-      msg,
-      call. = FALSE
     )
   }
 
-  if (is.null(kernel)) {
+  # this should be the same as the is.null pattern below but it doesn't work?!
+  # kernel <- kernel %||% info$kernal
+
+  if (is.null(kernel)){
     kernel <- info$kernel
   }
 

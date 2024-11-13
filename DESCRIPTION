@@ -1,7 +1,7 @@
 Type: Package
 Package: greta.gp
 Title: Gaussian Process Modelling in 'greta'
-Version: 0.2.1.9000
+Version: 0.2.2
 Authors@R: c(
     person(
       given = "Nick", 
@@ -32,11 +32,12 @@ URL: https://github.com/greta-dev/greta.gp,
     https://greta-dev.github.io/greta.gp/
 BugReports: https://github.com/greta-dev/greta.gp/issues
 Depends:
-    greta (>= 0.4.2),
-    R (>= 3.1.0)
+    greta (>= 0.5.0),
+    R (>= 4.1.0)
 Imports:
     cli,
     glue,
+    rlang (>= 1.1.4),
     tensorflow (>= 2.7.0)
 Suggests: 
     covr,
@@ -51,7 +52,7 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
-SystemRequirements: Python (>= 2.7.0) with header files and shared
-    library; TensorFlow (v1.14; https://www.tensorflow.org/); TensorFlow
-    Probability (v0.7.0; https://www.tensorflow.org/probability/)
+RoxygenNote: 7.3.2
+SystemRequirements: Python (>= 3.7.0) with header files and shared
+    library; TensorFlow (>= v2.0.0; https://www.tensorflow.org/); TensorFlow
+    Probability (v0.8.0; https://www.tensorflow.org/probability/)

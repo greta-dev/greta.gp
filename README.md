@@ -86,8 +86,9 @@ plot(
 )
 for (i in 1:200) {
   lines(draws[[1]][i, ] ~ x_plot,
-        lwd = 2,
-        col = rgb(0.7, 0.1, 0.4, 0.1))  
+    lwd = 2,
+    col = rgb(0.7, 0.1, 0.4, 0.1)
+  )
 }
 ```
 
