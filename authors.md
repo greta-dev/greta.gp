@@ -13,7 +13,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/greta-dev/greta.gp/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/greta-dev/greta.gp/blob/v0.2.3/DESCRIPTION)
 
 Golding N, Tierney N (2026). *greta.gp: Gaussian Process Modelling in
 'greta'*. R package version 0.2.3,
