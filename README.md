@@ -8,7 +8,8 @@
 [![R-CMD-check](https://github.com/greta-dev/greta.gp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/greta-dev/greta.gp/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/greta.gp)](https://CRAN.R-project.org/package=greta.gp)
-[![codecov](https://codecov.io/gh/greta-dev/greta.gp/graph/badge.svg?token=sDr01k2p2r)](https://codecov.io/gh/greta-dev/greta.gp)
+[![Codecov test
+coverage](https://codecov.io/gh/greta-dev/greta.gp/graph/badge.svg?token=sDr01k2p2r)](https://app.codecov.io/gh/greta-dev/greta.gp)
 <!-- badges: end -->
 
 `greta.gp` extends greta to let you define Gaussian processes as part of
@@ -23,8 +24,8 @@ You can install the current release version of `greta.gp` from CRAN:
 install.packages("greta.gp")
 ```
 
-Or install the development version of `greta.dynamics` from
-[r-universe](http://greta-dev.r-universe.dev/):
+Or install the development version of `greta.gp` from
+[r-universe](https://greta-dev.r-universe.dev/):
 
 ``` r
 install.packages("greta.gp", repos = "https://greta-dev.r-universe.dev")
@@ -91,7 +92,7 @@ for (i in 1:200) {
 }
 ```
 
-<img src="man/figures/README-plotting-1.png" width="100%" />
+<img src="man/figures/README-plotting-1.png" alt="" width="100%" />
 
 ## Code of Conduct
 

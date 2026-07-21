@@ -1,4 +1,58 @@
 url: https://greta-dev.github.io/greta.gp/
-template:
-  bootstrap: 5
 
+development:
+  mode: auto
+
+template:
+  package: greta.pkgdown
+  bootstrap: 5
+  # The shared template defaults to `man/figures/name_icon_on_purple.png`,
+  # which greta.gp does not ship. The image is served from pkgdown/assets/
+  # instead, so it is not added to the package tarball.
+  opengraph:
+    image:
+      src: name_icon_on_purple.png
+      alt: "greta.gp"
+
+home:
+  sidebar: false
+  title: greta.gp — Gaussian process modelling in greta
+  description: >
+    greta.gp extends greta to let you define Gaussian processes as part of
+    your model, with a syntax to create and combine GP kernels.
+
+navbar:
+  structure:
+    left: [get-started, reference, news]
+  components:
+    get-started:
+      text: get started
+      href: articles/getting-started.html
+    reference:
+      text: docs
+      href: reference/index.html
+
+reference:
+  - title: Gaussian process kernels
+    desc: >
+      Create and combine covariance functions (kernels) to describe the
+      structure of a Gaussian process.
+    contents:
+      - kernels
+
+  - title: Gaussian processes
+    desc: >
+      Define full rank or sparse Gaussian processes from kernels, and project
+      a fitted process to new coordinates.
+    contents:
+      - gp
+      - project
+
+  - title: Package
+    contents:
+      - greta.gp-package
+
+articles:
+  - title: Get started
+    contents:
+      - getting-started
