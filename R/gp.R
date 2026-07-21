@@ -21,9 +21,9 @@
 #'   one or more Gaussian processes
 #'
 #' @details `gp()` returns a greta array representing the values of the
-#'   Gaussian process(es) evaluated at `x`. This Gaussian process can be
-#'   made sparse (via a reduced-rank representation of the covariance) by
-#'   providing an additional set of inducing point coordinates `inducing`.
+#'   Gaussian process (or processes) evaluated at `x`. This Gaussian process
+#'   can be made sparse (via a reduced-rank representation of the covariance)
+#'   by providing an additional set of inducing point coordinates `inducing`.
 #'   `project()` evaluates the values of an existing Gaussian process
 #'   (created with `gp()`) to new data.
 #'

@@ -38,9 +38,9 @@ Define Gaussian processes, and project them to new coordinates.
 }
 \details{
 \code{gp()} returns a greta array representing the values of the
-Gaussian process(es) evaluated at \code{x}. This Gaussian process can be
-made sparse (via a reduced-rank representation of the covariance) by
-providing an additional set of inducing point coordinates \code{inducing}.
+Gaussian process (or processes) evaluated at \code{x}. This Gaussian process
+can be made sparse (via a reduced-rank representation of the covariance)
+by providing an additional set of inducing point coordinates \code{inducing}.
 \code{project()} evaluates the values of an existing Gaussian process
 (created with \code{gp()}) to new data.
 }
